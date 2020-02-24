@@ -136,13 +136,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\lib\Buffer.h" />
     <ClInclude Include="..\lib\glew\GL\glew.h" />
     <ClInclude Include="..\lib\glfw\glfw3.h" />
     <ClInclude Include="..\lib\glfw\glfw3native.h" />
+    <ClInclude Include="..\lib\Shader.h" />
+    <ClInclude Include="..\lib\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\lib\glew\glew.c" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="Buffer.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\fragment.glsl" />

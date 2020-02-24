@@ -2,10 +2,11 @@
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 #endif
 
-
+#include "../lib/Buffer.h"
 #include "../lib/glfw/glfw3.h"
 #include <iostream>
 #include <vector>
+
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
@@ -28,7 +29,15 @@ int main() {
 	}
 	glfwMakeContextCurrent(win);
 
-	
+	GLenum err = glewInit();
+
+	glEnable(GL_SCISSOR_TEST);
+	glEnable(GL_DEPTH_TEST);
+
+	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	glScissor(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	Shader* aux = new Shader();
 
 	// main loop
 	float angle = 0;
