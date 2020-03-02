@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include "../lib/glm/gtc/type_ptr.hpp"
 
 std::string readString(const std::string& filename)
 {
@@ -15,6 +16,11 @@ std::string readString(const std::string& filename)
 uint32_t Shader::getId() const
 {
 	return m_iId;
+}
+
+const char* Shader::getError() const
+{
+	return m_sError;
 }
 Shader::Shader()
 {
@@ -71,4 +77,68 @@ uint32_t* Shader::createGlShader(const char* _sFileName, GLenum _eShaderType)
 
 	
 	return pResult;
+}
+// Activa el uso de este programa
+void Shader::use() const
+{
+	glUseProgram(m_iId);
+}
+// Activa la escritura de las variables attribute,
+// y especifica su formato
+void Shader::setupAttribs() const
+{
+	//attribute vec3 vpos;
+	//attribute vec3 vcolor;
+	int iVposLoc = getLocation("vpos");
+	int iVcolorLoc = getLocation("vcolor");
+
+	glEnableVertexAttribArray(iVposLoc);
+	glEnableVertexAttribArray(iVcolorLoc);
+
+	glVertexAttribPointer(iVposLoc, 3, GL_FLOAT, false, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, Vertex::m_vPosition)));
+	glVertexAttribPointer(iVposLoc, 3, GL_FLOAT, false, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, Vertex::m_vColor)));
+
+}
+// Obtiene la localización de una variable uniform
+int Shader::getLocation(const char* name) const
+{
+	return glGetAttribLocation(m_iId, name);
+}
+// Da valor a una variable uniform
+void Shader::setInt(int loc, int val)
+{
+	if (loc != -1)
+	{
+		glUniform1i(loc, val);
+	}
+}
+void Shader::setFloat(int loc, float val)
+{
+	if (loc != -1)
+	{
+		glUniform1f(loc, val);
+	}
+
+}
+void Shader::setVec3(int loc, const glm::vec3& vec)
+{
+	if (loc != -1)
+	{
+		glUniform3f(loc, vec.x, vec.y, vec.z);
+	}
+
+}
+void Shader::setVec4(int loc, const glm::vec4& vec)
+{
+	if (loc != -1)
+	{
+		glUniform4f(loc, vec.r, vec.g, vec.b, vec.a);
+	}
+}
+void Shader::setMatrix(int loc, const glm::mat4& matrix)
+{
+	if (loc != -1)
+	{
+		glUniformMatrix4fv(loc, 1, false,glm::value_ptr(matrix));
+	}
 }

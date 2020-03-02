@@ -30,5 +30,6 @@ public:
 private:
 	uint32_t* createGlShader(const char* _sFileName, GLenum _eShaderType);
 
+
 };
 
