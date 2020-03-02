@@ -6,6 +6,8 @@ class Shader
 private:
 	uint32_t m_iId;
 	char* m_sError;
+	int m_iVposLoc;
+	int m_iVcolorLoc;
 
 public:
 	Shader();

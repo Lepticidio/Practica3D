@@ -44,7 +44,8 @@ Shader::Shader()
 		return;
 	}
 
-	
+	m_iVposLoc = getLocation("vpos");
+	m_iVcolorLoc = getLocation("vcolor");
 	
 }
 
@@ -89,14 +90,13 @@ void Shader::setupAttribs() const
 {
 	//attribute vec3 vpos;
 	//attribute vec3 vcolor;
-	int iVposLoc = getLocation("vpos");
-	int iVcolorLoc = getLocation("vcolor");
 
-	glEnableVertexAttribArray(iVposLoc);
-	glEnableVertexAttribArray(iVcolorLoc);
 
-	glVertexAttribPointer(iVposLoc, 3, GL_FLOAT, false, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, Vertex::m_vPosition)));
-	glVertexAttribPointer(iVposLoc, 3, GL_FLOAT, false, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, Vertex::m_vColor)));
+	glEnableVertexAttribArray(m_iVposLoc);
+	glVertexAttribPointer(m_iVposLoc, 3, GL_FLOAT, false, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, Vertex::m_vPosition)));
+
+	glEnableVertexAttribArray(m_iVcolorLoc);
+	glVertexAttribPointer(m_iVcolorLoc, 3, GL_FLOAT, false, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, Vertex::m_vColor)));
 
 }
 // Obtiene la localización de una variable uniform

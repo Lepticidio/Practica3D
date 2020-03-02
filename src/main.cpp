@@ -4,6 +4,7 @@
 
 #include "../lib/Buffer.h"
 #include "../lib/glfw/glfw3.h"
+#include "../glm/gtc/matrix_transform.hpp"
 #include <iostream>
 
 
@@ -15,6 +16,7 @@ void AddVertex(std::vector<Vertex> &_tVector, float _fX, float _fY, float _fZ)
 {
 	Vertex* pVertex = new Vertex();
 	pVertex->m_vPosition = glm::vec3(_fX, _fY, _fZ);
+	pVertex->m_vColor = glm::vec3(1, 1, 1);
 	_tVector.push_back(*pVertex);
 }
 
@@ -45,8 +47,8 @@ int main()
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	glScissor(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	Shader* shader = new Shader();
-	shader->use();
+	Shader* pShader = new Shader();
+	pShader->use();
 
 	std::vector<Vertex> tVertex;
 	AddVertex(tVertex, -1, 0, 0);
@@ -60,10 +62,35 @@ int main()
 
 	Buffer buffer(tVertex, tIndex);
 
+	glm::mat4 modelMatrix = glm::mat4();
+	
+
+	//glm::mat4 viewMatrix = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -6.0f));
+	glm::mat4 viewMatrix = glm::lookAt
+	(
+		glm::vec3(0, 0, 6), // the position of your camera
+		glm::vec3(0, 0, 0),   // where you want to look at
+		glm::vec3(0, 1, 0)       // up vector
+	);
+	
+
+	glm::mat4 projectionMatrix = glm::perspective
+	(
+		glm::radians(45.0f), // The vertical Field of View, in radians: the amount of "zoom". Think "camera lens". Usually between 90° (extra wide) and 30° (quite zoomed in)
+		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT,       // Aspect Ratio. Depends on the size of your window. 
+		0.1f,              // Near clipping plane. Keep as big as possible, or you'll get precision issues.
+		1000.0f             // Far clipping plane. Keep as little as possible.
+	);
+
+	glm::mat4 mvp = projectionMatrix * viewMatrix * modelMatrix;
+
+	pShader->setMatrix(pShader->getLocation("mvp"), mvp);
+
 	// main loop
 	float angle = 0;
 	double lastTime = glfwGetTime();
-	while ( !glfwWindowShouldClose(win) && !glfwGetKey(win, GLFW_KEY_ESCAPE) ) {
+	while ( !glfwWindowShouldClose(win) && !glfwGetKey(win, GLFW_KEY_ESCAPE) ) 
+	{
 		// get delta time
 		float deltaTime = static_cast<float>(glfwGetTime() - lastTime);
 		lastTime = glfwGetTime();
@@ -72,10 +99,14 @@ int main()
 		int screenWidth, screenHeight;
 		glfwGetWindowSize(win, &screenWidth, &screenHeight);
 		//clear buffers
+		glClearColor(0.1f, 0.0f, 0.2f, 1.0f);
+
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 
-		buffer.draw(*shader);
+		pShader->use();
+		pShader->setMatrix(pShader->getLocation("mvp"), mvp);
+		buffer.draw(*pShader);
 
 		
 
