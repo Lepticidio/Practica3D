@@ -5,13 +5,21 @@
 #include "../lib/Buffer.h"
 #include "../lib/glfw/glfw3.h"
 #include <iostream>
-#include <vector>
 
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
 
-int main() {
+
+void AddVertex(std::vector<Vertex> &_tVector, float _fX, float _fY, float _fZ)
+{
+	Vertex* pVertex = new Vertex();
+	pVertex->m_vPosition = glm::vec3(_fX, _fY, _fZ);
+	_tVector.push_back(*pVertex);
+}
+
+int main() 
+{
 	// init glfw
 	if ( !glfwInit() ) {
 		std::cout << "could not initialize glfw" << std::endl;
@@ -37,7 +45,20 @@ int main() {
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	glScissor(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	Shader* aux = new Shader();
+	Shader* shader = new Shader();
+	shader->use();
+
+	std::vector<Vertex> tVertex;
+	AddVertex(tVertex, -1, 0, 0);
+	AddVertex(tVertex, 1, 0, 0);
+	AddVertex(tVertex, 0, 1, 0);
+
+	std::vector<uint16_t> tIndex;
+	tIndex.push_back(0);
+	tIndex.push_back(1);
+	tIndex.push_back(2);
+
+	Buffer buffer(tVertex, tIndex);
 
 	// main loop
 	float angle = 0;
@@ -50,6 +71,11 @@ int main() {
 		// get window size
 		int screenWidth, screenHeight;
 		glfwGetWindowSize(win, &screenWidth, &screenHeight);
+		//clear buffers
+		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_DEPTH_BUFFER_BIT);
+
+		buffer.draw(*shader);
 
 		
 
