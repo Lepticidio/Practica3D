@@ -6,16 +6,8 @@ Buffer::Buffer(std::vector<Vertex> _tVertex, std::vector<uint16_t> _tIndexes) : 
 	glBindBuffer(GL_ARRAY_BUFFER, m_tIds[0]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_tIds[1]);
 
-	int iSiVer = sizeof(Vertex);
-	int iSiTVer = m_tVertex.size();
-	int iSizeVer = sizeof(Vertex) * m_tVertex.size();
-	Vertex* pVer = &m_tVertex[0];
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) *	m_tVertex.size(), &m_tVertex[0], GL_STATIC_DRAW);
-
-	int iSize = sizeof(uint16_t) * m_tIndexes.size();
-	uint16_t* pInd = &m_tIndexes[0];
-
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint16_t) * m_tIndexes.size(), &m_tIndexes[0],	GL_STATIC_DRAW);
 }
 void Buffer::draw(const Shader& shader) const
