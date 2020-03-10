@@ -29,6 +29,18 @@ void AddVertex(std::vector<Vertex>& _tVector, float _fX, float _fY, float _fZ, f
 	_tVector.push_back(*pVertex);
 }
 
+
+void DrawFigure(Buffer& _buffer, glm::vec3 _vPos, float _fAngle, glm::mat4& _viewProjection, Shader* _pShader)
+{
+	glm::mat4 modelMatrix = glm::translate(glm::mat4(), _vPos);
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(_fAngle), glm::vec3(0, 1, 0));
+	glm::mat4 mvp = _viewProjection * modelMatrix;
+	_pShader->setMatrix(_pShader->getLocation("mvp"), mvp);
+	_buffer.draw(*_pShader);
+
+}
+
+
 int main() 
 {
 	// init glfw
@@ -74,6 +86,7 @@ int main()
 
 	// main loop
 	float angle = 0;
+	float fAngularSpeed = 32;
 	double lastTime = glfwGetTime();
 	while ( !glfwWindowShouldClose(win) && !glfwGetKey(win, GLFW_KEY_ESCAPE) ) 
 	{
@@ -81,20 +94,20 @@ int main()
 		float deltaTime = static_cast<float>(glfwGetTime() - lastTime);
 		lastTime = glfwGetTime();
 
+		angle += fAngularSpeed * deltaTime;
+
+		while (angle > 360)
+		{
+			angle -= 360;
+		}
+
 		// get window size
 		int screenWidth, screenHeight;
 		glfwGetWindowSize(win, &screenWidth, &screenHeight);
 		//clear buffers
-		glClearColor(0.1f, 0.0f, 0.2f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 
-
-		//glm::mat4 modelMatrix = glm::mat4();
-		glm::mat4 modelMatrix = glm::translate(glm::mat4(), glm::vec3(0, 0, 0));
-
-
-		modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(0, 1, 0));
-		//glm::mat4 viewMatrix = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -6.0f));
 		glm::mat4 viewMatrix = glm::lookAt
 		(
 			glm::vec3(0, 0, 6), // the position of your camera
@@ -111,25 +124,31 @@ int main()
 			1000.0f             // Far clipping plane. Keep as little as possible.
 		);
 
-		glm::mat4 mvp = projectionMatrix * viewMatrix * modelMatrix;
-
-		pShader->setMatrix(pShader->getLocation("mvp"), mvp);
+		glm::mat4 viewProjection = projectionMatrix * viewMatrix;
 
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 
 		pShader->use();
-		//pShader->setMatrix(pShader->getLocation("mvp"), mvp);
-		buffer.draw(*pShader);
 
 		
+		DrawFigure(buffer, glm::vec3(-3, 0, 0), angle, viewProjection, pShader);
+		DrawFigure(buffer, glm::vec3(0, 0, 0), angle, viewProjection, pShader);
+		DrawFigure(buffer, glm::vec3(3, 0, 0), angle, viewProjection, pShader);
+
+		DrawFigure(buffer, glm::vec3(-3, 0, -3), angle, viewProjection, pShader);
+		DrawFigure(buffer, glm::vec3(0, 0, -3), angle, viewProjection, pShader);
+		DrawFigure(buffer, glm::vec3(3, 0, -3), angle, viewProjection, pShader);
+
+		DrawFigure(buffer, glm::vec3(-3, 0, -6), angle, viewProjection, pShader);
+		DrawFigure(buffer, glm::vec3(0, 0, -6), angle, viewProjection, pShader);
+		DrawFigure(buffer, glm::vec3(3, 0, -6), angle, viewProjection, pShader);
 
 		// refresh screen
 		glfwSwapBuffers(win);
 		glfwPollEvents();
 	}
-
 	// shutdown
 	glfwTerminate();
 }
