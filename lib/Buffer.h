@@ -1,5 +1,5 @@
 #pragma once
-#include "Shader.h"
+#include "Material.h"
 #include <vector>
 class Buffer
 {

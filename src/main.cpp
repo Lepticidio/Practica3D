@@ -191,17 +191,7 @@ int main()
 		pShader->use();
 
 		
-		DrawFigure(buffer, glm::vec3(-3, 0, 0), angle, viewProjection, pShader);
 		DrawFigure(buffer, glm::vec3(0, 0, 0), angle, viewProjection, pShader);
-		DrawFigure(buffer, glm::vec3(3, 0, 0), angle, viewProjection, pShader);
-
-		DrawFigure(buffer, glm::vec3(-3, 0, -3), angle, viewProjection, pShader);
-		DrawFigure(buffer, glm::vec3(0, 0, -3), angle, viewProjection, pShader);
-		DrawFigure(buffer, glm::vec3(3, 0, -3), angle, viewProjection, pShader);
-
-		DrawFigure(buffer, glm::vec3(-3, 0, -6), angle, viewProjection, pShader);
-		DrawFigure(buffer, glm::vec3(0, 0, -6), angle, viewProjection, pShader);
-		DrawFigure(buffer, glm::vec3(3, 0, -6), angle, viewProjection, pShader);
 
 		// refresh screen
 		glfwSwapBuffers(win);

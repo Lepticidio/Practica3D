@@ -46,6 +46,7 @@ Shader::Shader()
 
 	m_iVposLoc = glGetAttribLocation(m_iId, "vpos");
 	m_iVcolorLoc = glGetAttribLocation(m_iId, "vcolor");
+	m_iVtextLoc = glGetAttribLocation(m_iId, "vtex");
 	
 }
 
@@ -97,6 +98,13 @@ void Shader::setupAttribs() const
 
 	glEnableVertexAttribArray(m_iVcolorLoc);
 	glVertexAttribPointer(m_iVcolorLoc, 3, GL_FLOAT, false, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, m_vColor)));
+
+	if (m_iVtextLoc != -1)
+	{
+		glEnableVertexAttribArray(m_iVtextLoc);
+		glVertexAttribPointer(m_iVtextLoc, 2, GL_FLOAT, false, sizeof(Vertex), reinterpret_cast<const	void*>(offsetof(Vertex, m_vTextureCoord)));
+	}
+
 
 }
 // Obtiene la localización de una variable uniform

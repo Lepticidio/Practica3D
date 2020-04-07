@@ -8,6 +8,7 @@ private:
 	char* m_sError;
 	int m_iVposLoc;
 	int m_iVcolorLoc;
+	int m_iVtextLoc;
 
 public:
 	Shader();
