@@ -40,13 +40,14 @@ void AddVertex(std::vector<Vertex>& _tVector, float _fX, float _fY, float _fZ, f
 }
 
 
-void DrawFigure(Buffer& _buffer, glm::vec3 _vPos, float _fAngle, glm::mat4& _viewProjection, Shader* _pShader)
+void DrawFigure(Buffer& _buffer, glm::vec3 _vPos, float _fAngle, glm::mat4& _viewProjection, Material* _pMaterial)
 {
 	glm::mat4 modelMatrix = glm::translate(glm::mat4(), _vPos);
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(_fAngle), glm::vec3(0, 1, 0));
 	glm::mat4 mvp = _viewProjection * modelMatrix;
-	_pShader->setMatrix(_pShader->getLocation("mvp"), mvp);
-	_buffer.draw(*_pShader);
+	Shader shader = *_pMaterial->getShader();
+	shader.setMatrix(shader.getLocation("mvp"), mvp);
+	_buffer.draw(shader);
 
 }
 
@@ -79,8 +80,10 @@ int main()
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	glScissor(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	Shader* pShader = new Shader();
-	pShader->use();
+	std::shared_ptr<Texture> pTexture = Texture::load("data/box.png");
+	std::shared_ptr<Shader> pShader = std::make_shared<Shader>();
+
+	Material* pMaterial = new Material(pTexture, pShader);
 
 	std::vector<Vertex> tVertex;
 	AddVertex(tVertex, 0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 0.5f, 1.0f);
@@ -198,10 +201,10 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 
-		pShader->use();
+		pMaterial->prepare();
 
 		
-		DrawFigure(buffer, glm::vec3(0, 0, 0), angle, viewProjection, pShader);
+		DrawFigure(buffer, glm::vec3(0, 0, 0), angle, viewProjection, pMaterial);
 
 		// refresh screen
 		glfwSwapBuffers(win);
