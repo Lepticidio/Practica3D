@@ -1,5 +1,7 @@
 #pragma once
-#include "glm/glm.hpp"
+#include "GL/glew.h"
+#include "Vertex.h"
+#include "Texture.h"
 class Vertex
 {
 public:

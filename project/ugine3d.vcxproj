@@ -140,6 +140,7 @@
     <ClInclude Include="..\lib\glew\GL\glew.h" />
     <ClInclude Include="..\lib\glfw\glfw3.h" />
     <ClInclude Include="..\lib\glfw\glfw3native.h" />
+    <ClInclude Include="..\lib\Material.h" />
     <ClInclude Include="..\lib\Shader.h" />
     <ClInclude Include="..\lib\stb_image.h" />
     <ClInclude Include="..\lib\Texture.h" />
@@ -149,6 +150,7 @@
     <ClCompile Include="..\lib\glew\glew.c" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="Buffer.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Vertex.cpp" />
