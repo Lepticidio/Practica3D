@@ -141,6 +141,8 @@
     <ClInclude Include="..\lib\glfw\glfw3.h" />
     <ClInclude Include="..\lib\glfw\glfw3native.h" />
     <ClInclude Include="..\lib\Shader.h" />
+    <ClInclude Include="..\lib\stb_image.h" />
+    <ClInclude Include="..\lib\Texture.h" />
     <ClInclude Include="..\lib\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +150,7 @@
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
