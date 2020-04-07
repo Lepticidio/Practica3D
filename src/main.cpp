@@ -4,7 +4,6 @@
 
 #include "../lib/Buffer.h"
 #include "../lib/glfw/glfw3.h"
-#include "../glm/gtc/matrix_transform.hpp"
 #include <iostream>
 
 
@@ -40,13 +39,9 @@ void AddVertex(std::vector<Vertex>& _tVector, float _fX, float _fY, float _fZ, f
 }
 
 
-void DrawFigure(Buffer& _buffer, glm::vec3 _vPos, float _fAngle, glm::mat4& _viewProjection, Material* _pMaterial)
+void DrawFigure(Buffer& _buffer, Material* _pMaterial)
 {
-	glm::mat4 modelMatrix = glm::translate(glm::mat4(), _vPos);
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(_fAngle), glm::vec3(0, 1, 0));
-	glm::mat4 mvp = _viewProjection * modelMatrix;
 	Shader shader = *_pMaterial->getShader();
-	shader.setMatrix(shader.getLocation("mvp"), mvp);
 	_buffer.draw(shader);
 
 }
@@ -178,33 +173,13 @@ int main()
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 
-		glm::mat4 viewMatrix = glm::lookAt
-		(
-			glm::vec3(0, 1, 3), // the position of your camera
-
-			glm::vec3(0, 0, 0),   // where you want to look at
-			glm::vec3(0, 1, 0)       // up vector
-		);
-
-
-		glm::mat4 projectionMatrix = glm::perspective
-		(
-			glm::radians(45.0f), // The vertical Field of View, in radians: the amount of "zoom". Think "camera lens". Usually between 90° (extra wide) and 30° (quite zoomed in)
-			(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT,       // Aspect Ratio. Depends on the size of your window. 
-			0.1f,              // Near clipping plane. Keep as big as possible, or you'll get precision issues.
-			1000.0f             // Far clipping plane. Keep as little as possible.
-		);
-
-		glm::mat4 viewProjection = projectionMatrix * viewMatrix;
-
-
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 
-		pMaterial->prepare();
+		pMaterial->prepare(glm::vec3(0, 0, 0), SCREEN_WIDTH, SCREEN_HEIGHT, angle);
 
 		
-		DrawFigure(buffer, glm::vec3(0, 0, 0), angle, viewProjection, pMaterial);
+		DrawFigure(buffer, pMaterial);
 
 		// refresh screen
 		glfwSwapBuffers(win);

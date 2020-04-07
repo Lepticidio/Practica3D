@@ -1,5 +1,6 @@
 #pragma once
 #include "Shader.h"
+#include "../glm/gtc/matrix_transform.hpp"
 class Material
 {
 	std::shared_ptr<Shader> m_pShader;
@@ -9,7 +10,7 @@ public:
 
 	Material(const std::shared_ptr<Texture>& tex = nullptr,
 		const std::shared_ptr<Shader>& shader = nullptr);
-	void prepare();
+	void prepare(glm::vec3 _vPos, float _fScreenWidth, float _fScreenHeight, float _fAngle);
 	std::shared_ptr<Shader> getShader();
 	std::shared_ptr<Texture> getTexture();
 	void setShader(const std::shared_ptr<Shader>& shader);
