@@ -30,6 +30,16 @@ void AddVertex(std::vector<Vertex>& _tVector, float _fX, float _fY, float _fZ, f
 }
 
 
+void AddVertex(std::vector<Vertex>& _tVector, float _fX, float _fY, float _fZ, float _fR, float _fG, float _fB, float _fxUv, float _fyUv)
+{
+	Vertex* pVertex = new Vertex();
+	pVertex->m_vPosition = glm::vec3(_fX, _fY, _fZ);
+	pVertex->m_vColor = glm::vec3(_fR, _fG, _fB);
+	pVertex->m_vTextureCoord = glm::vec2(_fxUv, _fyUv);
+	_tVector.push_back(*pVertex);
+}
+
+
 void DrawFigure(Buffer& _buffer, glm::vec3 _vPos, float _fAngle, glm::mat4& _viewProjection, Shader* _pShader)
 {
 	glm::mat4 modelMatrix = glm::translate(glm::mat4(), _vPos);
@@ -73,14 +83,14 @@ int main()
 	pShader->use();
 
 	std::vector<Vertex> tVertex;
-	AddVertex(tVertex, 0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f);
-	AddVertex(tVertex, 0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f);
-	AddVertex(tVertex, 0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f);
-	AddVertex(tVertex, 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f);
-	AddVertex(tVertex, -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 1.0f);
-	AddVertex(tVertex, -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f);
-	AddVertex(tVertex, -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f);
-	AddVertex(tVertex, -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f);
+	AddVertex(tVertex, 0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 0.5f, 1.0f);
+	AddVertex(tVertex, 0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 0.5f, 0.0f);
+	AddVertex(tVertex, 0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f);
+	AddVertex(tVertex, 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	AddVertex(tVertex, -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f);
+	AddVertex(tVertex, -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
+	AddVertex(tVertex, -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.5f, 1.0f);
+	AddVertex(tVertex, -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.5f, 1.0f);
 
 	std::vector<uint16_t> tIndex;
 
