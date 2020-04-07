@@ -73,14 +73,71 @@ int main()
 	pShader->use();
 
 	std::vector<Vertex> tVertex;
-	AddVertex(tVertex, 0, 0.5f, 0, 1, 0, 0);
-	AddVertex(tVertex, -0.5f, -0.5f, 0, 0, 1, 0);
-	AddVertex(tVertex, 0.5f, -0.5f, 0, 0, 0, 1);
+	AddVertex(tVertex, 0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f);
+	AddVertex(tVertex, 0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f);
+	AddVertex(tVertex, 0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f);
+	AddVertex(tVertex, 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f);
+	AddVertex(tVertex, -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 1.0f);
+	AddVertex(tVertex, -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f);
+	AddVertex(tVertex, -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f);
+	AddVertex(tVertex, -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f);
 
 	std::vector<uint16_t> tIndex;
+
+	//Right
 	tIndex.push_back(0);
 	tIndex.push_back(1);
 	tIndex.push_back(2);
+
+	tIndex.push_back(1);
+	tIndex.push_back(2);
+	tIndex.push_back(3);
+
+	//Back
+	tIndex.push_back(0);
+	tIndex.push_back(1);
+	tIndex.push_back(4);
+
+	tIndex.push_back(5);
+	tIndex.push_back(1);
+	tIndex.push_back(4);
+
+	//Left
+	tIndex.push_back(6);
+	tIndex.push_back(4);
+	tIndex.push_back(5);
+
+	tIndex.push_back(6);
+	tIndex.push_back(7);
+	tIndex.push_back(5);
+
+	//Front
+	tIndex.push_back(2);
+	tIndex.push_back(3);
+	tIndex.push_back(6);
+
+	tIndex.push_back(3);
+	tIndex.push_back(7);
+	tIndex.push_back(6);
+
+	//Bottom
+	tIndex.push_back(1);
+	tIndex.push_back(3);
+	tIndex.push_back(5);
+
+	tIndex.push_back(3);
+	tIndex.push_back(7);
+	tIndex.push_back(5);
+
+	//Top
+	tIndex.push_back(0);
+	tIndex.push_back(2);
+	tIndex.push_back(4);
+
+	tIndex.push_back(2);
+	tIndex.push_back(6);
+	tIndex.push_back(4);
+
 
 	Buffer buffer(tVertex, tIndex);
 
@@ -110,7 +167,8 @@ int main()
 
 		glm::mat4 viewMatrix = glm::lookAt
 		(
-			glm::vec3(0, 0, 6), // the position of your camera
+			glm::vec3(0, 1, 3), // the position of your camera
+
 			glm::vec3(0, 0, 0),   // where you want to look at
 			glm::vec3(0, 1, 0)       // up vector
 		);
