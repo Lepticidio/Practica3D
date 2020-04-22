@@ -137,11 +137,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\lib\Buffer.h" />
+    <ClInclude Include="..\lib\Entity.h" />
     <ClInclude Include="..\lib\glew\GL\glew.h" />
     <ClInclude Include="..\lib\glfw\glfw3.h" />
     <ClInclude Include="..\lib\glfw\glfw3native.h" />
     <ClInclude Include="..\lib\Material.h" />
     <ClInclude Include="..\lib\Mesh.h" />
+    <ClInclude Include="..\lib\Model.h" />
     <ClInclude Include="..\lib\Shader.h" />
     <ClInclude Include="..\lib\State.h" />
     <ClInclude Include="..\lib\stb_image.h" />
@@ -152,8 +154,10 @@
     <ClCompile Include="..\lib\glew\glew.c" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="Buffer.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="Texture.cpp" />

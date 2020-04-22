@@ -10,7 +10,7 @@ public:
 
 	Material(const std::shared_ptr<Texture>& tex = nullptr,
 		const std::shared_ptr<Shader>& shader = nullptr);
-	void prepare(glm::vec3 _vPos, float _fScreenWidth, float _fScreenHeight, float _fAngle);
+	void prepare(glm::vec3 _vPos, float _fScreenWidth, float _fScreenHeight);
 	std::shared_ptr<Shader> getShader();
 	std::shared_ptr<Texture> getTexture();
 	void setShader(const std::shared_ptr<Shader>& shader);

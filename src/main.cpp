@@ -2,7 +2,7 @@
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 #endif
 
-#include "../lib/Mesh.h"
+#include "../lib/Model.h"
 #include "../lib/glfw/glfw3.h"
 #include <iostream>
 
@@ -139,13 +139,15 @@ int main()
 	tIndex.push_back(4);
 
 	std::shared_ptr<Buffer> pBuffer = std::make_shared<Buffer>(tVertex, tIndex);
-	Mesh boxMesh;
+	std::shared_ptr<Mesh> pMesh = std::make_shared<Mesh>();
 	
-	boxMesh.addBuffer(pBuffer, pMaterial);
+	pMesh->addBuffer(pBuffer, pMaterial);
+
+	Model box(pMesh);
 
 	// main loop
 	float angle = 0;
-	float fAngularSpeed = 32;
+	float fAngularSpeed = 0.2f;
 	double lastTime = glfwGetTime();
 	while ( !glfwWindowShouldClose(win) && !glfwGetKey(win, GLFW_KEY_ESCAPE) ) 
 	{
@@ -170,10 +172,10 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 
-		pMaterial->prepare(glm::vec3(0, 0, 0), SCREEN_WIDTH, SCREEN_HEIGHT, angle);
+		pMaterial->prepare(glm::vec3(0, 0, 0), SCREEN_WIDTH, SCREEN_HEIGHT);
 
-		
-		boxMesh.draw();
+		box.setRotation(glm::vec3(0, angle, 0));
+		box.draw();
 
 		// refresh screen
 		glfwSwapBuffers(win);

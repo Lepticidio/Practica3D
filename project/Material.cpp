@@ -28,7 +28,7 @@ void Material::setTexture(const std::shared_ptr<Texture>& tex)
 {
 	m_pTexture = tex;
 }
-void Material::prepare(glm::vec3 _vPos, float _fScreenWidth, float _fScreenHeight, float _fAngle)
+void Material::prepare(glm::vec3 _vPos, float _fScreenWidth, float _fScreenHeight)
 {
 	(*m_pShader).use();
 	m_pTexture->bind();
@@ -52,9 +52,7 @@ void Material::prepare(glm::vec3 _vPos, float _fScreenWidth, float _fScreenHeigh
 		1000.0f             // Far clipping plane. Keep as little as possible.
 	);
 
-	glm::mat4 modelMatrix = glm::translate(glm::mat4(), _vPos);
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(_fAngle), glm::vec3(0, 1, 0));
-	glm::mat4 mvp = projectionMatrix * viewMatrix * modelMatrix;
+	glm::mat4 mvp = projectionMatrix * viewMatrix * State::modelMatrix;
 	Shader shader = * m_pShader;
 	shader.setMatrix(shader.getLocation("mvp"), mvp);
 }
