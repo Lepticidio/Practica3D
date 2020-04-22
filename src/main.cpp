@@ -4,6 +4,7 @@
 
 #include "../lib/Model.h"
 #include "../lib/glfw/glfw3.h"
+#include "../lib/Camera.h"
 #include <iostream>
 
 
@@ -64,9 +65,21 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_SCISSOR_TEST);
 	
+	Camera camera;
 
-	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-	glScissor(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	camera.setViewport(glm::ivec4(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT));
+	camera.setProjection
+	(
+		glm::perspective
+		(
+			glm::radians(45.0f), // The vertical Field of View, in radians: the amount of "zoom". Think "camera lens". Usually between 90° (extra wide) and 30° (quite zoomed in)
+			(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT,       // Aspect Ratio. Depends on the size of your window. 
+			0.1f,              // Near clipping plane. Keep as big as possible, or you'll get precision issues.
+			1000.0f             // Far clipping plane. Keep as little as possible.
+		)
+	);
+	camera.setPosition(glm::vec3(0, 1, 3));
+	camera.setRotation(glm::vec3(-30, 0, 0));
 
 	std::shared_ptr<Texture> pTexture = Texture::load("data/box.png");
 	std::shared_ptr<Shader> pShader = std::make_shared<Shader>();
@@ -165,12 +178,8 @@ int main()
 		// get window size
 		int screenWidth, screenHeight;
 		glfwGetWindowSize(win, &screenWidth, &screenHeight);
-		//clear buffers
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-
-		glClear(GL_COLOR_BUFFER_BIT);
-		glClear(GL_DEPTH_BUFFER_BIT);
+		camera.prepare();
 
 		pMaterial->prepare(glm::vec3(0, 0, 0), SCREEN_WIDTH, SCREEN_HEIGHT);
 
