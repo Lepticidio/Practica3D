@@ -7,7 +7,14 @@ Material::Material(const std::shared_ptr<Texture>& tex, const std::shared_ptr<Sh
 }
 std::shared_ptr<Shader> Material::getShader()
 {
-	return m_pShader;
+	if (m_pShader)
+	{
+		return m_pShader;
+	}
+	else
+	{
+		return State::defaultShader;
+	}
 }
 std::shared_ptr<Texture> Material::getTexture()
 {

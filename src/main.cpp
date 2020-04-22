@@ -2,7 +2,7 @@
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 #endif
 
-#include "../lib/Buffer.h"
+#include "../lib/Mesh.h"
 #include "../lib/glfw/glfw3.h"
 #include <iostream>
 
@@ -39,13 +39,6 @@ void AddVertex(std::vector<Vertex>& _tVector, float _fX, float _fY, float _fZ, f
 }
 
 
-void DrawFigure(Buffer& _buffer, Material* _pMaterial)
-{
-	Shader shader = *_pMaterial->getShader();
-	_buffer.draw(shader);
-
-}
-
 
 int main() 
 {
@@ -77,8 +70,7 @@ int main()
 
 	std::shared_ptr<Texture> pTexture = Texture::load("data/box.png");
 	std::shared_ptr<Shader> pShader = std::make_shared<Shader>();
-
-	Material* pMaterial = new Material(pTexture, pShader);
+	std::shared_ptr<Material> pMaterial = std::make_shared<Material>(pTexture, pShader);
 
 	std::vector<Vertex> tVertex;
 	AddVertex(tVertex, 0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 0.5f, 1.0f);
@@ -146,8 +138,10 @@ int main()
 	tIndex.push_back(6);
 	tIndex.push_back(4);
 
-
-	Buffer buffer(tVertex, tIndex);
+	std::shared_ptr<Buffer> pBuffer = std::make_shared<Buffer>(tVertex, tIndex);
+	Mesh boxMesh;
+	
+	boxMesh.addBuffer(pBuffer, pMaterial);
 
 	// main loop
 	float angle = 0;
@@ -179,7 +173,7 @@ int main()
 		pMaterial->prepare(glm::vec3(0, 0, 0), SCREEN_WIDTH, SCREEN_HEIGHT, angle);
 
 		
-		DrawFigure(buffer, pMaterial);
+		boxMesh.draw();
 
 		// refresh screen
 		glfwSwapBuffers(win);

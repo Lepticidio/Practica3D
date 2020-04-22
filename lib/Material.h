@@ -1,5 +1,5 @@
 #pragma once
-#include "Shader.h"
+#include "State.h"
 #include "../glm/gtc/matrix_transform.hpp"
 class Material
 {
