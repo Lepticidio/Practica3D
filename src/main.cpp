@@ -4,7 +4,7 @@
 
 #include "../lib/Model.h"
 #include "../lib/glfw/glfw3.h"
-#include "../lib/Camera.h"
+#include "../lib/World.h"
 #include <iostream>
 
 
@@ -65,10 +65,10 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_SCISSOR_TEST);
 	
-	Camera camera;
+	std::shared_ptr<Camera> pCamera = std::make_shared<Camera>();
 
-	camera.setViewport(glm::ivec4(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT));
-	camera.setProjection
+	pCamera->setViewport(glm::ivec4(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT));
+	pCamera->setProjection
 	(
 		glm::perspective
 		(
@@ -78,8 +78,8 @@ int main()
 			1000.0f             // Far clipping plane. Keep as little as possible.
 		)
 	);
-	camera.setPosition(glm::vec3(0, 1, 3));
-	camera.setRotation(glm::vec3(-30, 0, 0));
+	pCamera->setPosition(glm::vec3(0, 1, 3));
+	pCamera->setRotation(glm::vec3(-30, 0, 0));
 
 	std::shared_ptr<Texture> pTexture = Texture::load("data/box.png");
 	std::shared_ptr<Shader> pShader = std::make_shared<Shader>();
@@ -156,7 +156,12 @@ int main()
 	
 	pMesh->addBuffer(pBuffer, pMaterial);
 
-	Model box(pMesh);
+	std::shared_ptr<Model> pBox = std::make_shared<Model>(pMesh);
+
+	World world;
+
+	world.addEntity(pCamera);
+	world.addEntity(pBox);
 
 	// main loop
 	float angle = 0;
@@ -179,12 +184,11 @@ int main()
 		int screenWidth, screenHeight;
 		glfwGetWindowSize(win, &screenWidth, &screenHeight);
 
-		camera.prepare();
 
 		pMaterial->prepare(glm::vec3(0, 0, 0), SCREEN_WIDTH, SCREEN_HEIGHT);
 
-		box.setRotation(glm::vec3(0, angle, 0));
-		box.draw();
+		pBox->setRotation(glm::vec3(0, angle, 0));
+		world.draw();
 
 		// refresh screen
 		glfwSwapBuffers(win);

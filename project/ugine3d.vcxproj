@@ -150,6 +150,7 @@
     <ClInclude Include="..\lib\stb_image.h" />
     <ClInclude Include="..\lib\Texture.h" />
     <ClInclude Include="..\lib\Vertex.h" />
+    <ClInclude Include="..\lib\World.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\lib\glew\glew.c" />
@@ -164,6 +165,7 @@
     <ClCompile Include="State.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Vertex.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\fragment.glsl" />
