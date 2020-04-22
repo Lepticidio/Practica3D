@@ -83,12 +83,12 @@ int main()
 	std::vector<Vertex> tVertex;
 	AddVertex(tVertex, 0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 0.5f, 1.0f);
 	AddVertex(tVertex, 0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 0.5f, 0.0f);
-	AddVertex(tVertex, 0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f);
-	AddVertex(tVertex, 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	AddVertex(tVertex, 0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f);//Amarillo
+	AddVertex(tVertex, 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);//Rojo
 	AddVertex(tVertex, -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f);
 	AddVertex(tVertex, -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
-	AddVertex(tVertex, -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.5f, 1.0f);
-	AddVertex(tVertex, -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.5f, 1.0f);
+	AddVertex(tVertex, -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.5f, 1.0f);//Verde
+	AddVertex(tVertex, -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f);//Negro
 
 	std::vector<uint16_t> tIndex;
 
