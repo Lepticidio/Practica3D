@@ -81,80 +81,14 @@ int main()
 	pCamera->setPosition(glm::vec3(0, 1, 3));
 	pCamera->setRotation(glm::vec3(-30, 0, 0));
 
-	std::shared_ptr<Texture> pTexture = Texture::load("data/box.png");
+	std::shared_ptr<Texture> pTexture = Texture::load("data/gunslinger_dfs.tga");
 	std::shared_ptr<Shader> pShader = std::make_shared<Shader>();
 	std::shared_ptr<Material> pMaterial = std::make_shared<Material>(pTexture, pShader);
 
-	std::vector<Vertex> tVertex;
-	AddVertex(tVertex, 0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 0.5f, 1.0f);
-	AddVertex(tVertex, 0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 0.5f, 0.0f);
-	AddVertex(tVertex, 0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f);//Amarillo
-	AddVertex(tVertex, 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);//Rojo
-	AddVertex(tVertex, -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f);
-	AddVertex(tVertex, -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
-	AddVertex(tVertex, -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.5f, 1.0f);//Verde
-	AddVertex(tVertex, -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f);//Negro
+	State::defaultShader = pShader;
 
-	std::vector<uint16_t> tIndex;
+	std::shared_ptr<Mesh> pMesh = Mesh::load("data/gunslinger.obj");
 
-	//Right
-	tIndex.push_back(0);
-	tIndex.push_back(1);
-	tIndex.push_back(2);
-
-	tIndex.push_back(1);
-	tIndex.push_back(2);
-	tIndex.push_back(3);
-
-	//Back
-	tIndex.push_back(0);
-	tIndex.push_back(1);
-	tIndex.push_back(4);
-
-	tIndex.push_back(5);
-	tIndex.push_back(1);
-	tIndex.push_back(4);
-
-	//Left
-	tIndex.push_back(6);
-	tIndex.push_back(4);
-	tIndex.push_back(5);
-
-	tIndex.push_back(6);
-	tIndex.push_back(7);
-	tIndex.push_back(5);
-
-	//Front
-	tIndex.push_back(2);
-	tIndex.push_back(3);
-	tIndex.push_back(6);
-
-	tIndex.push_back(3);
-	tIndex.push_back(7);
-	tIndex.push_back(6);
-
-	//Bottom
-	tIndex.push_back(1);
-	tIndex.push_back(3);
-	tIndex.push_back(5);
-
-	tIndex.push_back(3);
-	tIndex.push_back(7);
-	tIndex.push_back(5);
-
-	//Top
-	tIndex.push_back(0);
-	tIndex.push_back(2);
-	tIndex.push_back(4);
-
-	tIndex.push_back(2);
-	tIndex.push_back(6);
-	tIndex.push_back(4);
-
-	std::shared_ptr<Buffer> pBuffer = std::make_shared<Buffer>(tVertex, tIndex);
-	std::shared_ptr<Mesh> pMesh = std::make_shared<Mesh>();
-	
-	pMesh->addBuffer(pBuffer, pMaterial);
 
 	std::shared_ptr<Model> pBox = std::make_shared<Model>(pMesh);
 
@@ -174,6 +108,11 @@ int main()
 		lastTime = glfwGetTime();
 
 		angle += fAngularSpeed * deltaTime;
+
+		if (glfwGetKey(win, GLFW_KEY_UP))
+		{
+		//	pCamera->move()
+		}
 
 		while (angle > 360)
 		{

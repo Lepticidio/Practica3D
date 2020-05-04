@@ -9,6 +9,7 @@ private:
 	std::vector<uint16_t> m_tIndexes;
 public:
 	Buffer(std::vector<Vertex> _tVertex, std::vector<uint16_t> _tIndexes);
+
 	void draw(const Shader& shader) const;
 };
 

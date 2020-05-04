@@ -1,4 +1,7 @@
+#define TINYOBJLOADER_IMPLEMENTATION
+
 #include "../lib/Mesh.h"
+#include "../../lib/tinyobjloader-master/tiny_obj_loader.h"
 
 void Mesh::addBuffer(const std::shared_ptr<Buffer>& buffer, const std::shared_ptr<Material>& material)
 {
@@ -24,6 +27,40 @@ const std::shared_ptr<Material>& Mesh::getMaterial(size_t index) const
 std::shared_ptr<Material>& Mesh::getMaterial(size_t index)
 {
 	return m_tMaterials[index];
+}
+std::shared_ptr<Mesh> Mesh::load(const char* filename, const std::shared_ptr<Shader>& shader)
+{
+	std::shared_ptr<Mesh> pResult = std::make_shared<Mesh>();
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials;
+	std::vector<Vertex> tVertex;
+	std::vector<uint16_t> tIndex;
+	std::string warn, err;
+	if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, filename)) 
+	{
+		throw std::runtime_error(warn + err);
+	}
+	for (const auto& shape : shapes) {
+		for (const auto& index : shape.mesh.indices) {
+			Vertex* vertexAux = new Vertex();
+			vertexAux->m_vPosition.x = attrib.vertices[3 * index.vertex_index + 0];
+			vertexAux->m_vPosition.y = attrib.vertices[3 * index.vertex_index + 1];
+			vertexAux->m_vPosition.z = attrib.vertices[3 * index.vertex_index + 2];
+			vertexAux->m_vColor.r = 1;
+			vertexAux->m_vColor.g = 1;
+			vertexAux->m_vColor.b = 1;
+			vertexAux->m_vTextureCoord.x = attrib.texcoords[2 *
+				index.texcoord_index + 0];
+			vertexAux->m_vTextureCoord.y = attrib.texcoords[2 *
+				index.texcoord_index + 1];
+			tVertex.push_back(*vertexAux);
+			tIndex.push_back(tIndex.size());
+		}
+	}
+	std::shared_ptr<Material> pMaterial = std::make_shared<Material>(nullptr, shader);
+	pResult->addBuffer(std::make_shared<Buffer>(tVertex, tIndex), pMaterial);
+	return pResult;
 }
 void Mesh::draw()
 {
