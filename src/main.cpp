@@ -11,6 +11,12 @@
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
 
+glm::vec3 rotateAroundY(glm::vec3 _vVector, float _fAngle)
+{
+	float fRadians = _fAngle * 0.0174533f;
+	glm::vec3 vResult = glm::vec3(_vVector.x * cos(fRadians) + _vVector.z * sin(fRadians), _vVector.y, -_vVector.x*sin(fRadians) + _vVector.z*cos(fRadians));
+	return vResult;
+}
 
 void AddVertex(std::vector<Vertex> &_tVector, float _fX, float _fY, float _fZ)
 {
@@ -78,42 +84,74 @@ int main()
 			1000.0f             // Far clipping plane. Keep as little as possible.
 		)
 	);
-	pCamera->setPosition(glm::vec3(0, 1, 3));
-	pCamera->setRotation(glm::vec3(-30, 0, 0));
+	pCamera->setPosition(glm::vec3(0, 0, 3));
+	pCamera->setRotation(glm::vec3(0, 0, 0));
 
-	std::shared_ptr<Texture> pTexture = Texture::load("data/gunslinger_dfs.tga");
+	
 	std::shared_ptr<Shader> pShader = std::make_shared<Shader>();
-	std::shared_ptr<Material> pMaterial = std::make_shared<Material>(pTexture, pShader);
-
 	State::defaultShader = pShader;
 
-	std::shared_ptr<Mesh> pMesh = Mesh::load("data/gunslinger.obj");
+	std::shared_ptr<Texture> pGunslingerTexture = Texture::load("data/gunslinger_dfs.tga");
+	std::shared_ptr<Material> pGunslingerMaterial = std::make_shared<Material>(pGunslingerTexture, pShader);
+
+	std::shared_ptr<Texture> pStackTexture = Texture::load("data/top.png");
+	std::shared_ptr<Material> pStackMaterial = std::make_shared<Material>(pStackTexture, pShader);
+
+	std::shared_ptr<Mesh> pGunslingerMesh = Mesh::load("data/gunslinger.obj");
+	pGunslingerMesh->setMaterial(pGunslingerMaterial, 0);
+	std::shared_ptr<Mesh> pStackMesh = Mesh::load("data/box_stack.obj");
+	pStackMesh->setMaterial(pStackMaterial, 0);
 
 
-	std::shared_ptr<Model> pBox = std::make_shared<Model>(pMesh);
+	std::shared_ptr<Model> pGunslinger = std::make_shared<Model>(pGunslingerMesh);
+	pGunslinger->setScale(glm::vec3(0.05f, 0.05f, 0.05f));
+	std::shared_ptr<Model> pStack = std::make_shared<Model>(pStackMesh);
+	pStack->setPosition(glm::vec3(1, -1, 0));
+	pStack->setScale(glm::vec3(0.25f, 0.25f, 0.25f));
 
 	World world;
 
 	world.addEntity(pCamera);
-	world.addEntity(pBox);
+	world.addEntity(pGunslinger);
+	world.addEntity(pStack);
 
 	// main loop
 	float angle = 0;
 	float fAngularSpeed = 0.2f;
 	double lastTime = glfwGetTime();
+	float fCameraSpeed = 1.f;
 	while ( !glfwWindowShouldClose(win) && !glfwGetKey(win, GLFW_KEY_ESCAPE) ) 
 	{
 		// get delta time
 		float deltaTime = static_cast<float>(glfwGetTime() - lastTime);
 		lastTime = glfwGetTime();
 
-		angle += fAngularSpeed * deltaTime;
+		glm::vec3 vSecondViewColumn = glm::vec3(State::viewMatrix[2]);
+		const glm::vec3 vForward = -normalize(vSecondViewColumn);
+		const glm::vec3 vRight = rotateAroundY(vForward, -90);
+		
 
 		if (glfwGetKey(win, GLFW_KEY_UP))
 		{
-		//	pCamera->move()
+			glm::vec3 vVelocity = vForward * fCameraSpeed * deltaTime;
+			pCamera->move(vVelocity);
+		}
+		if (glfwGetKey(win, GLFW_KEY_DOWN))
+		{
+			glm::vec3 vVelocity = -vForward * fCameraSpeed * deltaTime;
+			pCamera->move(vVelocity);
 		}
 
+		if (glfwGetKey(win, GLFW_KEY_RIGHT))
+		{
+			glm::vec3 vVelocity = vRight * fCameraSpeed * deltaTime;
+			pCamera->move(vVelocity);
+		}
+		if (glfwGetKey(win, GLFW_KEY_LEFT))
+		{
+			glm::vec3 vVelocity = -vRight * fCameraSpeed * deltaTime;
+			pCamera->move(vVelocity);
+		}
 		while (angle > 360)
 		{
 			angle -= 360;
@@ -124,11 +162,7 @@ int main()
 		glfwGetWindowSize(win, &screenWidth, &screenHeight);
 
 
-		pMaterial->prepare(glm::vec3(0, 0, 0), SCREEN_WIDTH, SCREEN_HEIGHT);
-
-		pBox->setRotation(glm::vec3(0, angle, 0));
 		world.draw();
-
 		// refresh screen
 		glfwSwapBuffers(win);
 		glfwPollEvents();

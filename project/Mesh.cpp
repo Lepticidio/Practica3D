@@ -28,6 +28,13 @@ std::shared_ptr<Material>& Mesh::getMaterial(size_t index)
 {
 	return m_tMaterials[index];
 }
+void Mesh::setMaterial(std::shared_ptr<Material>& _pMaterial, size_t index)
+{
+	if (index < m_tMaterials.size())
+	{
+		m_tMaterials[index] = _pMaterial;
+	}
+}
 std::shared_ptr<Mesh> Mesh::load(const char* filename, const std::shared_ptr<Shader>& shader)
 {
 	std::shared_ptr<Mesh> pResult = std::make_shared<Mesh>();
@@ -68,6 +75,7 @@ void Mesh::draw()
 	{
 		Material material = *(m_tMaterials[i]);
 		Shader shader = *(m_tMaterials[i]->getShader());
+		material.prepare();
 		m_tBuffers[i]->draw(shader);
 	}
 }

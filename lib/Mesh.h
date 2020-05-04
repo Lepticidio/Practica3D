@@ -12,6 +12,7 @@ public:
 	std::shared_ptr<Buffer>& getBuffer(size_t index);
 	const std::shared_ptr<Material>& getMaterial(size_t index) const;
 	std::shared_ptr<Material>& getMaterial(size_t index);
+	void setMaterial(std::shared_ptr<Material>& _pMaterial, size_t index);
 	void draw();
 
 };
