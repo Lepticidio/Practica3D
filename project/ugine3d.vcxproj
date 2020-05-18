@@ -150,6 +150,7 @@
     <ClInclude Include="..\lib\State.h" />
     <ClInclude Include="..\lib\stb_image.h" />
     <ClInclude Include="..\lib\Texture.h" />
+    <ClInclude Include="..\lib\tinyobjloader-master\tiny_obj_loader.h" />
     <ClInclude Include="..\lib\Vertex.h" />
     <ClInclude Include="..\lib\World.h" />
   </ItemGroup>

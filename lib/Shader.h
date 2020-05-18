@@ -9,6 +9,7 @@ private:
 	int m_iVposLoc;
 	int m_iVcolorLoc;
 	int m_iVtextLoc;
+	int m_iVnormalLoc;
 
 public:
 	Shader();

@@ -1922,7 +1922,7 @@ bool MaterialFileReader::operator()(const std::string &matId,
   if (!m_mtlBaseDir.empty()) {
     filepath = std::string(m_mtlBaseDir) + matId;
   } else {
-    filepath = "../../data/"+matId;
+    filepath = "../../data/" + matId;
   }
 
   std::ifstream matIStream(filepath.c_str());
