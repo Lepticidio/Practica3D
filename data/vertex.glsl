@@ -29,6 +29,7 @@ struct Light
 	vec3 diffuse;
 	vec3 specular;
 	vec3 position;
+	float attenuation;
 };
 
 
@@ -65,7 +66,9 @@ void main()
 		//vec3 specular =  material.specular.xyz * light.specular.xyz * pow(max(cosAlpha, 0.0f), material.shininess);
 	
 		vec3 vWhite = vec3(1,1,1);
-		diffuse.xyz += lights[i].diffuse.xyz * material.diffuse.xyz *max(dot(N,L), 0.0);
+		float att = 1 / (lights[i].attenuation* length(vpos-lights[i].position));
+		diffuse.xyz += lights[i].diffuse.xyz*att * material.diffuse.xyz *max(dot(N,L), 0.0);
+
 	}
 
 	fcolor = globalAmbient + diffuse;

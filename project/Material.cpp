@@ -82,13 +82,16 @@ void Material::prepare()
 	{
 		std::string sPosDiffuse = "lights[" + std::to_string(i) + "].diffuse";
 		std::string sPosPosition = "lights[" + std::to_string(i) + "].position";
+		std::string sAttenuation = "lights[" + std::to_string(i) + "].attenuation";
 		const char* cPosDiffuse = sPosDiffuse.c_str();
 		const char* cPosPosition = sPosPosition.c_str();
+		const char* cAttenuation = sAttenuation.c_str();
 		glm::vec3 vLightDiffuse = State::lights[i]->getColor();
 		glm::vec3 vLightPosition = State::lights[i]->getPosition();
 		float fLightAttenuation = State::lights[i]->getLinearAttenuation();
 		shader.setVec3(shader.getLocation(cPosDiffuse), vLightDiffuse);
 		shader.setVec3(shader.getLocation(cPosPosition), vLightPosition);
+		shader.setFloat(shader.getLocation(cAttenuation), fLightAttenuation);
 	}
 
 }
