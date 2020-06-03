@@ -72,5 +72,14 @@ void Material::prepare()
 	shader.setMatrix(shader.getLocation("projectionMatrix"), projection);
 	shader.setMatrix(shader.getLocation("normalMatrix"), normal);
 	shader.setVec3(shader.getLocation("globalAmbient"), State::ambient);
+	shader.setVec3(shader.getLocation("material.diffuse"), m_vColor);
+
+	int iNumberLights = State::lights.size();
+
+	shader.setInt(shader.getLocation("inumberlights"), iNumberLights);
+	for (int i = 0; i < iNumberLights; i++)
+	{
+		shader.setVec3(shader.getLocation("lights[i].diffuse"), State::lights[i]->getColor());
+	}
 
 }
