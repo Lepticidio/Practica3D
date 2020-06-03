@@ -1,4 +1,5 @@
 uniform mat4 mvp;
+uniform mat4 matNormal;
 attribute vec3 vpos;
 attribute vec2 vtex;
 attribute vec3 vnormal;

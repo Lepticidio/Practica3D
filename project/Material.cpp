@@ -5,6 +5,22 @@ Material::Material(const std::shared_ptr<Texture>& tex, const std::shared_ptr<Sh
 {
 
 }
+const glm::vec4& Material::getColor() const
+{
+	return m_vColor;
+}
+void Material::setColor(const glm::vec4& color)
+{
+	m_vColor = color;
+}
+uint8_t Material::getShininess() const
+{
+	return m_iShininess;
+}
+void Material::setShininess(uint8_t shininess)
+{
+	m_iShininess = shininess;
+}
 std::shared_ptr<Shader> Material::getShader()
 {
 	if (m_pShader)

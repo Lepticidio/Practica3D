@@ -1,4 +1,5 @@
 #include "../lib/World.h"
+#include "../lib/State.h"
 void World::addEntity(const std::shared_ptr<Entity>& entity)
 {
 	m_tEntities.push_back(entity);
@@ -6,6 +7,11 @@ void World::addEntity(const std::shared_ptr<Entity>& entity)
 	if (camera)
 	{
 		m_tCameras.push_back(camera);
+	}
+	std::shared_ptr<Light> light = std::dynamic_pointer_cast<Light, Entity>(entity);
+	if (light)
+	{
+		m_tLights.push_back(light);
 	}
 }
 void World::removeEntity(const std::shared_ptr<Entity>& entity)
@@ -21,6 +27,18 @@ void World::removeEntity(const std::shared_ptr<Entity>& entity)
 				break;
 			}
 		}
+	}
+	std::shared_ptr<Light> light = std::dynamic_pointer_cast<Light, Entity>(entity);
+	if (light)
+	{
+		for (int i = 0; i < m_tLights.size(); i++)
+		{
+			if (m_tLights[i] == light)
+			{
+				m_tLights.erase(m_tLights.begin() + i);
+				break;
+			}
+		}
 
 	}
 	for (int i = 0; i < m_tEntities.size(); i++)
@@ -31,6 +49,14 @@ void World::removeEntity(const std::shared_ptr<Entity>& entity)
 			break;
 		}
 	}	
+}
+const glm::vec3& World::getAmbient() const
+{
+	return m_vAmbientLight;
+}
+void World::setAmbient(const glm::vec3& ambient)
+{
+	m_vAmbientLight = ambient;
 }
 size_t World::getNumEntities() const
 {
@@ -53,6 +79,16 @@ void World::update(float deltaTime)
 }
 void World::draw()
 {
+	/*
+	State::ambient = m_vAmbientLight;
+	State::lights.clear();
+	for (int i = 0; i < m_tLights.size(); i++)
+	{
+		State::lights.push_back(m_tLights[i]);
+	}
+	
+	
+	*/
 	for (int i = 0; i < m_tCameras.size(); i++)
 	{
 		m_tCameras[i]->prepare();
