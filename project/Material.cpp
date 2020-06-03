@@ -1,7 +1,7 @@
 #include "../lib/Material.h"
 
 
-Material::Material(const std::shared_ptr<Texture>& tex, const std::shared_ptr<Shader>& shader) : m_pTexture(tex), m_pShader(shader)
+Material::Material(const std::shared_ptr<Texture>& tex, const std::shared_ptr<Shader>& shader) : m_pTexture(tex), m_pShader(shader), m_vColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f))
 {
 
 }
@@ -72,14 +72,15 @@ void Material::prepare()
 	shader.setMatrix(shader.getLocation("projectionMatrix"), projection);
 	shader.setMatrix(shader.getLocation("normalMatrix"), normal);
 	shader.setVec3(shader.getLocation("globalAmbient"), State::ambient);
-	shader.setVec3(shader.getLocation("material.diffuse"), m_vColor);
+	shader.setVec4(shader.getLocation("material.diffuse"), m_vColor);
 
 	int iNumberLights = State::lights.size();
 
 	shader.setInt(shader.getLocation("inumberlights"), iNumberLights);
 	for (int i = 0; i < iNumberLights; i++)
 	{
-		shader.setVec3(shader.getLocation("lights[i].diffuse"), State::lights[i]->getColor());
+		glm::vec3 vLightDiffuse = State::lights[i]->getColor();
+		shader.setVec3(shader.getLocation("lights[i].diffuse"), vLightDiffuse);
 	}
 
 }

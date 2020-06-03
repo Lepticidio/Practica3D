@@ -111,8 +111,8 @@ int main()
 
 	std::shared_ptr<Light> pPointLight = std::make_shared<Light>();
 	pPointLight->setType(LightType::POINT);
-	pPointLight->setColor(glm::vec3(1.0f, 0.0f, 0.0f));
-	pPointLight->setPosition(glm::vec3(0, 0, 3));
+	pPointLight->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	pPointLight->setPosition(glm::vec3(0, 0, 1));
 	pPointLight->setLinearAttenuation(0.2f);
 
 
@@ -124,7 +124,7 @@ int main()
 	world.addEntity(pGunslinger);
 	world.addEntity(pStack);
 	world.addEntity(pPointLight);
-	world.setAmbient(glm::vec3(0.2f, 0.2f, 0.2f));
+	world.setAmbient(glm::vec3(0.0f, 0.0f, 0.0f));
 
 	// main loop
 	float angle = 0;

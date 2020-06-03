@@ -15,7 +15,7 @@ attribute vec3 vcolor;
 varying vec2 ftex;
 varying vec3 fambient;
 varying vec3 fdiffuse;
-varying vec3 prediffuses[99];
+varying vec3 fcolor;
 
 out vec3 varyingNormal;
 out vec3 varyingLightDirs[99]; 
@@ -50,21 +50,25 @@ void main()
 	iNumberLightsOut = inumberlights;
 	fambient = globalAmbient;
 
+	vec4 P = mvMatrix * vec4(vpos,1.0);
 	vec3 N = normalize((normalMatrix * vec4(vnormal,1.0)).xyz);
-	vec3 Eye = normalize(-(mvMatrix * vec4(vpos,1.0)).xyz);
+	vec3 Eye = normalize(-P.xyz);
+	vec3 diffuse;
 	for(int i = 0; i < inumberlights; i++)
 	{
 
+		
+		vec3 L = normalize(lights[i].position - P.xyz);
+		vec3 R = reflect(-L,N);
 
-		vec3 L = normalize(lights[i].position - varyingVertPos);
-		vec3 H = normalize((varyingLightDirs[i] + (-varyingVertPos)).xyz);
+		//vec3 H = normalize((varyingLightDirs[i] + (-varyingVertPos)).xyz);
 		//vec3 specular =  material.specular.xyz * light.specular.xyz * pow(max(cosAlpha, 0.0f), material.shininess);
 	
-	
-		fdiffuse.xyz += lights[i].diffuse.xyz * material.diffuse.xyz *max(dot(N,L), 0.0);
+		vec3 vWhite = vec3(1,1,1);
+		diffuse.xyz += vWhite * material.diffuse.xyz *max(dot(N,L), 0.0);
 	}
 
-
+	fcolor = globalAmbient + diffuse;
 	gl_Position = projectionMatrix * mvMatrix * vec4(vpos, 1);
 	ftex = vtex;
 	fambient = globalAmbient;
