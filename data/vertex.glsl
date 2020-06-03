@@ -14,6 +14,7 @@ attribute vec3 vcolor;
 
 varying vec2 ftex;
 varying vec3 fambient;
+varying vec3 fdiffuse;
 varying vec3 prediffuses[99];
 
 out vec3 varyingNormal;
@@ -46,15 +47,21 @@ uniform Material material;
 
 void main()
 {
-	varyingNormal = (normalMatrix * vec4(vnormal,1.0)).xyz;
-	varyingVertPos = (mvMatrix * vec4(vpos,1.0)).xyz;
 	iNumberLightsOut = inumberlights;
-	vec3 ambient = globalAmbient;
+	fambient = globalAmbient;
+
+	vec3 N = normalize((normalMatrix * vec4(vnormal,1.0)).xyz);
+	vec3 Eye = normalize(-(mvMatrix * vec4(vpos,1.0)).xyz);
 	for(int i = 0; i < inumberlights; i++)
 	{
-		varyingLightDirs[i] = lights[i].position - varyingVertPos;
-		varyingHalfVectors[i] = (varyingLightDirs[i] + (-varyingVertPos)).xyz;
-		prediffuses[i] = lights[i].diffuse.xyz * material.diffuse.xyz;
+
+
+		vec3 L = normalize(lights[i].position - varyingVertPos);
+		vec3 H = normalize((varyingLightDirs[i] + (-varyingVertPos)).xyz);
+		//vec3 specular =  material.specular.xyz * light.specular.xyz * pow(max(cosAlpha, 0.0f), material.shininess);
+	
+	
+		fdiffuse.xyz += lights[i].diffuse.xyz * material.diffuse.xyz *max(dot(N,L), 0.0);
 	}
 
 
