@@ -80,8 +80,8 @@ void Material::prepare()
 	shader.setInt(shader.getLocation("inumberlights"), iNumberLights);
 	for (int i = 0; i < iNumberLights; i++)
 	{
-		std::string sPosDiffuse = "lights" + std::to_string(i) + "].diffuse";
-		std::string sPosPosition = "lights" + std::to_string(i) + "].position";
+		std::string sPosDiffuse = "lights[" + std::to_string(i) + "].diffuse";
+		std::string sPosPosition = "lights[" + std::to_string(i) + "].position";
 		const char* cPosDiffuse = sPosDiffuse.c_str();
 		const char* cPosPosition = sPosPosition.c_str();
 		glm::vec3 vLightDiffuse = State::lights[i]->getColor();

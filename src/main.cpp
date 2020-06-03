@@ -112,7 +112,7 @@ int main()
 	std::shared_ptr<Light> pPointLight = std::make_shared<Light>();
 	pPointLight->setType(LightType::POINT);
 	pPointLight->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
-	pPointLight->setPosition(glm::vec3(0, 0, 1));
+	pPointLight->setPosition(glm::vec3(0, 0, -10));
 	pPointLight->setLinearAttenuation(0.2f);
 
 
