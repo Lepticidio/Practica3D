@@ -13,12 +13,14 @@ attribute vec2 vtex;
 attribute vec3 vcolor;
 
 varying vec2 ftex;
-varying vec3 fcolor;
+varying vec3 fambient;
+varying vec3 prediffuses[99];
 
 out vec3 varyingNormal;
 out vec3 varyingLightDirs[99]; 
 out vec3 varyingVertPos;
-out int iNumberLightsOut;
+out vec3 varyingHalfVectors[99];
+flat out int iNumberLightsOut;
 
 struct Light
 { 
@@ -47,13 +49,16 @@ void main()
 	varyingNormal = (normalMatrix * vec4(vnormal,1.0)).xyz;
 	varyingVertPos = (mvMatrix * vec4(vpos,1.0)).xyz;
 	iNumberLightsOut = inumberlights;
+	vec3 ambient = globalAmbient;
 	for(int i = 0; i < inumberlights; i++)
 	{
 		varyingLightDirs[i] = lights[i].position - varyingVertPos;
+		varyingHalfVectors[i] = (varyingLightDirs[i] + (-varyingVertPos)).xyz;
+		prediffuses[i] = lights[i].diffuse.xyz * material.diffuse.xyz;
 	}
-	//
+
 
 	gl_Position = projectionMatrix * mvMatrix * vec4(vpos, 1);
 	ftex = vtex;
-	fcolor = vcolor;
+	fambient = globalAmbient;
 }
