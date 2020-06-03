@@ -1,6 +1,6 @@
 #version 430
 
-uniform vec3 ambient;
+uniform vec3 globalAmbient;
 uniform mat4 mvMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 normalMatrix;
@@ -41,6 +41,10 @@ void main()
 
 	vec3 Eye = normalize(-P.xyz);
 	vec3 R = reflect(-L, N);
+	//vec3 ambient = ((globalAmbient* material.ambient) + (light.ambient*material.ambient)).xyz;
+	//vec3 diffuse = light.diffuse.xyz * material.diffuse.xyz*max(dot(N,L), 0.0);
+	//vec3 specular = material.specular.xyz * light.specular.xyz * pow(max(dot(R, Eye), 0.0f), material.shininess);
+	vec3 ambient = globalAmbient;
 
 	gl_Position = projectionMatrix * mvMatrix * vec4(vpos, 1);
 	ftex = vtex;

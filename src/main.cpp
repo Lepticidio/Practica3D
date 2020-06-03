@@ -109,11 +109,21 @@ int main()
 	pStack->setPosition(glm::vec3(1, -1, 0));
 	pStack->setScale(glm::vec3(0.25f, 0.25f, 0.25f));
 
+	std::shared_ptr<Light> pPointLight = std::make_shared<Light>();
+	pPointLight->setType(LightType::POINT);
+	pPointLight->setColor(glm::vec3(1.0f, 0.0f, 0.0f));
+	pPointLight->setPosition(glm::vec3(0, 0, 3));
+	pPointLight->setLinearAttenuation(0.2f);
+
+
+
+
 	World world;
 
 	world.addEntity(pCamera);
 	world.addEntity(pGunslinger);
 	world.addEntity(pStack);
+	world.addEntity(pPointLight);
 
 	// main loop
 	float angle = 0;

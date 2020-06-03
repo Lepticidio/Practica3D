@@ -79,16 +79,21 @@ void World::update(float deltaTime)
 }
 void World::draw()
 {
-	/*
+	
 	State::ambient = m_vAmbientLight;
+
+	
 	State::lights.clear();
+
+	
 	for (int i = 0; i < m_tLights.size(); i++)
 	{
 		State::lights.push_back(m_tLights[i]);
 	}
 	
 	
-	*/
+	
+	
 	for (int i = 0; i < m_tCameras.size(); i++)
 	{
 		m_tCameras[i]->prepare();

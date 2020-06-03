@@ -1,7 +1,8 @@
 #pragma once
 #include "Shader.h"
+#include "Entity.h"
 enum LightType { DIRECTIONAL, POINT };
-class Light
+class Light : public Entity
 {
 	float m_fLinearAttenuation;
 	glm::vec3 m_vColor;

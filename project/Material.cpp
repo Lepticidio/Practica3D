@@ -71,4 +71,6 @@ void Material::prepare()
 	shader.setMatrix(shader.getLocation("mvMatrix"), mv);
 	shader.setMatrix(shader.getLocation("projectionMatrix"), projection);
 	shader.setMatrix(shader.getLocation("normalMatrix"), normal);
+	shader.setVec3(shader.getLocation("globalAmbient"), State::ambient);
+
 }
