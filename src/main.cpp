@@ -124,7 +124,7 @@ int main()
 	world.addEntity(pGunslinger);
 	world.addEntity(pStack);
 	world.addEntity(pPointLight);
-	world.setAmbient(glm::vec3(0.0f, 0.0f, 0.0f));
+	world.setAmbient(glm::vec3(0.2f, 0.2f, 0.2f));
 
 	// main loop
 	float angle = 0;

@@ -1,5 +1,5 @@
 #include "../lib/Material.h"
-
+#include <string>
 
 Material::Material(const std::shared_ptr<Texture>& tex, const std::shared_ptr<Shader>& shader) : m_pTexture(tex), m_pShader(shader), m_vColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f))
 {
@@ -75,12 +75,20 @@ void Material::prepare()
 	shader.setVec4(shader.getLocation("material.diffuse"), m_vColor);
 
 	int iNumberLights = State::lights.size();
-
+	
+	
 	shader.setInt(shader.getLocation("inumberlights"), iNumberLights);
 	for (int i = 0; i < iNumberLights; i++)
 	{
+		std::string sPosDiffuse = "lights" + std::to_string(i) + "].diffuse";
+		std::string sPosPosition = "lights" + std::to_string(i) + "].position";
+		const char* cPosDiffuse = sPosDiffuse.c_str();
+		const char* cPosPosition = sPosPosition.c_str();
 		glm::vec3 vLightDiffuse = State::lights[i]->getColor();
-		shader.setVec3(shader.getLocation("lights[i].diffuse"), vLightDiffuse);
+		glm::vec3 vLightPosition = State::lights[i]->getPosition();
+		float fLightAttenuation = State::lights[i]->getLinearAttenuation();
+		shader.setVec3(shader.getLocation(cPosDiffuse), vLightDiffuse);
+		shader.setVec3(shader.getLocation(cPosPosition), vLightPosition);
 	}
 
 }
