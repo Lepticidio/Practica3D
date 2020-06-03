@@ -15,6 +15,11 @@ attribute vec3 vcolor;
 varying vec2 ftex;
 varying vec3 fcolor;
 
+out vec3 varyingNormal;
+out vec3 varyingLightDirs[99]; 
+out vec3 varyingVertPos;
+out int iNumberLightsOut;
+
 struct Light
 { 
 	vec4 ambient;
@@ -39,25 +44,15 @@ uniform Material material;
 
 void main()
 {
-	vec4 P = mvMatrix * vec4(vpos, 1);
-	vec3 N = normalize((normalMatrix * vec4(vnormal, 1)).xyz);
-	//vec3 ambient = ((globalAmbient* material.ambient) + (light.ambient*material.ambient)).xyz;
-	//vec3 diffuse = light.diffuse.xyz * material.diffuse.xyz*max(dot(N,L), 0.0);
-	//vec3 specular = material.specular.xyz * light.specular.xyz * pow(max(dot(R, Eye), 0.0f), material.shininess);
-	vec3 ambient = globalAmbient;
-	vec3 diffuse;
-	
+	varyingNormal = (normalMatrix * vec4(vnormal,1.0)).xyz;
+	varyingVertPos = (mvMatrix * vec4(vpos,1.0)).xyz;
+	iNumberLightsOut = inumberlights;
 	for(int i = 0; i < inumberlights; i++)
 	{
-		Light light = lights[i];
-
-		vec3 L = normalize(light.position - P.xyz);
-		vec3 Eye = normalize(-P.xyz);
-		vec3 R = reflect(-L, N);
-
-		diffuse += light.diffuse.xyz * material.diffuse.xyz*max(dot(N,L), 0.0);
+		varyingLightDirs[i] = lights[i].position - varyingVertPos;
 	}
-	
+	//
+
 	gl_Position = projectionMatrix * mvMatrix * vec4(vpos, 1);
 	ftex = vtex;
 	fcolor = vcolor;
