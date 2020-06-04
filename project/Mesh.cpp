@@ -54,6 +54,9 @@ std::shared_ptr<Mesh> Mesh::load(const char* filename, const std::shared_ptr<Sha
 			vertexAux->m_vPosition.x = attrib.vertices[3 * index.vertex_index + 0];
 			vertexAux->m_vPosition.y = attrib.vertices[3 * index.vertex_index + 1];
 			vertexAux->m_vPosition.z = attrib.vertices[3 * index.vertex_index + 2];
+			vertexAux->m_vNormal.x = attrib.normals[3 * index.normal_index + 0];
+			vertexAux->m_vNormal.y = attrib.normals[3 * index.normal_index + 1];
+			vertexAux->m_vNormal.z = attrib.normals[3 * index.normal_index + 2];
 			vertexAux->m_vColor.r = 1;
 			vertexAux->m_vColor.g = 1;
 			vertexAux->m_vColor.b = 1;

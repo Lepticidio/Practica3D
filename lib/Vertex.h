@@ -8,6 +8,6 @@ public:
 	glm::vec3 m_vPosition;
 	glm::vec3 m_vColor;
 	glm::vec2 m_vTextureCoord;
-	glm::vec2 m_vNormal;
+	glm::vec3 m_vNormal;
 };
 

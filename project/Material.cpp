@@ -85,7 +85,7 @@ void Material::prepare()
 		std::string sPosPosition = "lights[" + std::to_string(i) + "].position";
 		std::string sAttenuation = "lights[" + std::to_string(i) + "].attenuation";
 		std::string sDirection= "lights[" + std::to_string(i) + "].direction";
-		std::string sType = "lights[" + std::to_string(i) + "].isPoint";
+		std::string sType = "lights[" + std::to_string(i) + "].type";
 		const char* cPosDiffuse = sPosDiffuse.c_str();
 		const char* cPosPosition = sPosPosition.c_str();
 		const char* cAttenuation = sAttenuation.c_str();
