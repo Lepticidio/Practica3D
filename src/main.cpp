@@ -93,9 +93,11 @@ int main()
 
 	std::shared_ptr<Texture> pGunslingerTexture = Texture::load("data/gunslinger_dfs.tga");
 	std::shared_ptr<Material> pGunslingerMaterial = std::make_shared<Material>(pGunslingerTexture, pShader);
+	pGunslingerMaterial->setShininess(90);
 
 	std::shared_ptr<Texture> pStackTexture = Texture::load("data/top.png");
 	std::shared_ptr<Material> pStackMaterial = std::make_shared<Material>(pStackTexture, pShader);
+	pStackMaterial->setShininess(180);
 
 	std::shared_ptr<Mesh> pGunslingerMesh = Mesh::load("data/gunslinger.obj");
 	pGunslingerMesh->setMaterial(pGunslingerMaterial, 0);
@@ -112,10 +114,13 @@ int main()
 	std::shared_ptr<Light> pPointLight = std::make_shared<Light>();
 	pPointLight->setType(LightType::POINT);
 	pPointLight->setColor(glm::vec3(1.0f, 1.0f, 1.0f));
-	pPointLight->setPosition(glm::vec3(0, 0, -10));
+	pPointLight->setPosition(glm::vec3(0, 0, 10));
 	pPointLight->setLinearAttenuation(0.2f);
 
-
+	std::shared_ptr<Light> pDirectionalLight = std::make_shared<Light>();
+	pDirectionalLight->setType(LightType::DIRECTIONAL);
+	pDirectionalLight->setColor(glm::vec3(0.0f, 1.0f, 1.0f));
+	pDirectionalLight->setDirection(glm::vec3(0.0f, 0.9f, 0.0f));
 
 
 	World world;
@@ -123,6 +128,7 @@ int main()
 	world.addEntity(pCamera);
 	world.addEntity(pGunslinger);
 	world.addEntity(pStack);
+	//world.addEntity(pDirectionalLight);
 	world.addEntity(pPointLight);
 	world.setAmbient(glm::vec3(0.2f, 0.2f, 0.2f));
 

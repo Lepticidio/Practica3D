@@ -73,6 +73,7 @@ void Material::prepare()
 	shader.setMatrix(shader.getLocation("normalMatrix"), normal);
 	shader.setVec3(shader.getLocation("globalAmbient"), State::ambient);
 	shader.setVec4(shader.getLocation("material.diffuse"), m_vColor);
+	shader.setFloat(shader.getLocation("material.shininess"), ((float)m_iShininess / 255.f));
 
 	int iNumberLights = State::lights.size();
 	
@@ -83,15 +84,23 @@ void Material::prepare()
 		std::string sPosDiffuse = "lights[" + std::to_string(i) + "].diffuse";
 		std::string sPosPosition = "lights[" + std::to_string(i) + "].position";
 		std::string sAttenuation = "lights[" + std::to_string(i) + "].attenuation";
+		std::string sDirection= "lights[" + std::to_string(i) + "].direction";
+		std::string sType = "lights[" + std::to_string(i) + "].isPoint";
 		const char* cPosDiffuse = sPosDiffuse.c_str();
 		const char* cPosPosition = sPosPosition.c_str();
 		const char* cAttenuation = sAttenuation.c_str();
+		const char* cDirection = sDirection.c_str();
+		const char* cType = sType.c_str();
 		glm::vec3 vLightDiffuse = State::lights[i]->getColor();
 		glm::vec3 vLightPosition = State::lights[i]->getPosition();
+		glm::vec3 vLightDirection = State::lights[i]->getDirection();
 		float fLightAttenuation = State::lights[i]->getLinearAttenuation();
+		int iType= State::lights[i]->getType();
 		shader.setVec3(shader.getLocation(cPosDiffuse), vLightDiffuse);
 		shader.setVec3(shader.getLocation(cPosPosition), vLightPosition);
+		shader.setVec3(shader.getLocation(cDirection), vLightDirection);
 		shader.setFloat(shader.getLocation(cAttenuation), fLightAttenuation);
+		shader.setInt(shader.getLocation(cType), iType);
 	}
 
 }

@@ -17,6 +17,14 @@ void Light::setColor(const glm::vec3& color)
 {
 	m_vColor = color;
 }
+const glm::vec3& Light::getDirection() const
+{
+	return m_vDirection;
+}
+void Light::setDirection(const glm::vec3& direction)
+{
+	m_vDirection = direction;
+}
 float Light::getLinearAttenuation() const
 {
 	return m_fLinearAttenuation;
