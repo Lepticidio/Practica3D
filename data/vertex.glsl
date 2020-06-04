@@ -85,14 +85,12 @@ void main()
 		
 		vec3 H = normalize(L - normalize(P.xyz));
 		
-		if(NDotL > 0)
-		{
-			float NdotH = dot(N, H);
-			if(NdotH > 0)
-			{
-				specular +=  pow(NdotH, material.shininess) * att;
-			}
-		}
+	
+		float NdotH = dot(N, H);
+
+		specular +=  pow(max(0, NdotH), material.shininess) * att;
+		
+
 
 
 
@@ -100,9 +98,9 @@ void main()
 		
 
 	}
-
+	//specular = vec3 (0, 0, 0);
 	fcolor = globalAmbient + diffuse + specular;
 	gl_Position = projectionMatrix * mvMatrix * vec4(vpos, 1);
-	ftex = vtex;
+	ftex = vtex; 
 	fambient = globalAmbient;
 }

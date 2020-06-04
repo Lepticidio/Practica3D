@@ -73,7 +73,8 @@ void Material::prepare()
 	shader.setMatrix(shader.getLocation("normalMatrix"), normal);
 	shader.setVec3(shader.getLocation("globalAmbient"), State::ambient);
 	shader.setVec4(shader.getLocation("material.diffuse"), m_vColor);
-	shader.setFloat(shader.getLocation("material.shininess"), ((float)m_iShininess / 255.f));
+	float fShine = ((float)m_iShininess / 255.f);
+	shader.setFloat(shader.getLocation("material.shininess"), fShine);
 
 	int iNumberLights = State::lights.size();
 	

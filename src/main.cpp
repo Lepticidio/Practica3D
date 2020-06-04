@@ -114,7 +114,7 @@ int main()
 	std::shared_ptr<Light> pPointLight = std::make_shared<Light>();
 	pPointLight->setType(LightType::POINT);
 	pPointLight->setColor(glm::vec3(1.0f, 0.0f, 0.0f));
-	pPointLight->setPosition(glm::vec3(0, 0, 3));
+	pPointLight->setPosition(glm::vec3(0, 0, 10));
 	pPointLight->setLinearAttenuation(0.2f);
 
 	std::shared_ptr<Light> pDirectionalLight = std::make_shared<Light>();
@@ -129,23 +129,23 @@ int main()
 	world.addEntity(pGunslinger);
 	world.addEntity(pStack);
 	world.addEntity(pDirectionalLight);
-	//world.addEntity(pPointLight);
-	world.setAmbient(glm::vec3(0.0f, 0.0f, 0.0f));
+	world.addEntity(pPointLight);
+	world.setAmbient(glm::vec3(0.0f, 0.2f, 0.0f));
 
 	// main loop
-	float angle = 0;
-	float fAngularSpeed = 0.2f;
 	double lastTime = glfwGetTime();
 	float fCameraSpeed = 1.f;
+	const float fLightRotationSpeed = 90.0f;
 	while ( !glfwWindowShouldClose(win) && !glfwGetKey(win, GLFW_KEY_ESCAPE) ) 
 	{
 		// get delta time
-		float deltaTime = static_cast<float>(glfwGetTime() - lastTime);
+		const float deltaTime = static_cast<float>(glfwGetTime() - lastTime);
 		lastTime = glfwGetTime();
 
 		glm::vec3 vSecondViewColumn = glm::vec3(State::viewMatrix[2]);
 		const glm::vec3 vForward = -normalize(vSecondViewColumn);
 		const glm::vec3 vRight = rotateAroundY(vForward, -90);
+		pPointLight->setPosition(rotateAroundY(pPointLight->getPosition(), fLightRotationSpeed*deltaTime));
 		
 
 		if (glfwGetKey(win, GLFW_KEY_UP))
@@ -168,10 +168,6 @@ int main()
 		{
 			glm::vec3 vVelocity = -vRight * fCameraSpeed * deltaTime;
 			pCamera->move(vVelocity);
-		}
-		while (angle > 360)
-		{
-			angle -= 360;
 		}
 
 		// get window size
