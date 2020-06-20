@@ -6,3 +6,7 @@ glm::mat4 State::viewMatrix;
 glm::mat4 State::modelMatrix;
 glm::vec3 State::ambient;
 std::vector <std::shared_ptr<Light>> State::lights;
+
+std::shared_ptr<Shader> State::overrideShader;
+glm::mat4 State::depthBiasMatrix;
+bool State::shadows;
