@@ -1,6 +1,8 @@
 #include "../lib/Camera.h"
 #include "../lib/State.h"
 #include "../glm/gtc/matrix_transform.hpp"
+#include "../lib/Framebuffer.h"
+
 Camera::Camera()
 {
 
@@ -48,4 +50,12 @@ void Camera::prepare()
 
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);
+}
+void Camera::setFramebuffer(const std::shared_ptr<Framebuffer>& framebuffer)
+{
+	m_pFramebuffer = framebuffer;
+}
+const std::shared_ptr<const Framebuffer> Camera::getFramebuffer() const
+{
+	return m_pFramebuffer;
 }
