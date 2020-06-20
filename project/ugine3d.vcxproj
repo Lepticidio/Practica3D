@@ -139,6 +139,7 @@
     <ClInclude Include="..\lib\Buffer.h" />
     <ClInclude Include="..\lib\Camera.h" />
     <ClInclude Include="..\lib\Entity.h" />
+    <ClInclude Include="..\lib\Framebuffer.h" />
     <ClInclude Include="..\lib\glew\GL\glew.h" />
     <ClInclude Include="..\lib\glfw\glfw3.h" />
     <ClInclude Include="..\lib\glfw\glfw3native.h" />
@@ -160,6 +161,7 @@
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />

@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+class Framebuffer;
 class Camera : public Entity
 {
 	glm::vec3 m_vColor;
