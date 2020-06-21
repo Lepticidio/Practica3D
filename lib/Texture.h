@@ -9,7 +9,7 @@ class Texture
 	bool m_bIsDepth;
 public:
 	Texture(int _iId, int _iWidth, int _iHeight);
-	Texture(uint16_t _iWidth, uint16_t _iHeight, bool _bIsDepth = false);
+	Texture(int _iWidth, int _iHeight, bool _bIsDepth = false);
 	static std::shared_ptr<Texture> load(const char* filename);
 	uint32_t getId() const;
 	const glm::ivec2& getSize() const;

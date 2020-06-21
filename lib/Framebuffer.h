@@ -4,6 +4,7 @@
 class Framebuffer
 {
 	std::shared_ptr <Texture> m_pColorTexture, m_pDepthTexture;
+public:
 	Framebuffer(
 		const std::shared_ptr<Texture>& colorTex,
 		const std::shared_ptr<Texture>& depthTex);

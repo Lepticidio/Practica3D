@@ -1,5 +1,16 @@
 #include "../lib/World.h"
 #include "../lib/State.h"
+#include "../lib/Camera.h"
+#include "../lib/Framebuffer.h"
+
+World::World()
+{
+	std::shared_ptr<Framebuffer> frameBuffer = std::make_shared<Framebuffer>(nullptr, std::make_shared<Texture>(1024, 1024, true));
+	Camera depthCamera = Camera();
+	depthCamera.setFramebuffer(frameBuffer);
+	depthCamera.setViewport(glm::ivec4(0, 0, 1024, 1024));
+	Framebuffer framebuffer();
+}
 void World::addEntity(const std::shared_ptr<Entity>& entity)
 {
 	m_tEntities.push_back(entity);
@@ -102,4 +113,12 @@ void World::draw()
 			m_tEntities[j]->draw();
 		}
 	}
+}
+void World::setShadows(bool enable)
+{
+	m_bShadows = enable;
+}
+void World::setDepthOrtho(float left, float right, float bottom, float top, float near, float far)
+{
+
 }

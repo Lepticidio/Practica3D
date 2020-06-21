@@ -68,6 +68,10 @@ void Material::prepare()
 
 	//glm::mat4 mvp = State::projectionMatrix;
 	Shader shader = * m_pShader;
+	if (State::overrideShader != nullptr)
+	{
+		shader = *State::overrideShader;
+	}
 	shader.setMatrix(shader.getLocation("mvMatrix"), mv);
 	shader.setMatrix(shader.getLocation("projectionMatrix"), projection);
 	shader.setMatrix(shader.getLocation("normalMatrix"), normal);

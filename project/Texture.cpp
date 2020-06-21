@@ -10,7 +10,7 @@ Texture::Texture(int _iId, int _iWidth, int _iHeight) : m_iId(_iId), m_iWidth(_i
 
 }
 
-Texture::Texture(uint16_t _iWidth, uint16_t _iHeight, bool _bIsDepth) :  m_iWidth(_iWidth), m_iHeight(_iHeight), m_bIsDepth(_bIsDepth)
+Texture::Texture(int _iWidth, int _iHeight, bool _bIsDepth) :  m_iWidth(_iWidth), m_iHeight(_iHeight), m_bIsDepth(_bIsDepth)
 {
 	GLuint texId;
 	glGenTextures(1, &texId);
