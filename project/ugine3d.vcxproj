@@ -173,6 +173,8 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\data\depthFragment.glsl" />
+    <None Include="..\data\depthVertex.glsl" />
     <None Include="..\data\fragment.glsl" />
     <None Include="..\data\vertex.glsl" />
   </ItemGroup>

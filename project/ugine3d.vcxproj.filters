@@ -133,5 +133,11 @@
     <None Include="..\data\vertex.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\data\depthFragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\data\depthVertex.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
