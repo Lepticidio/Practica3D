@@ -1,5 +1,9 @@
 #include "GL/glew.h"
 #include "../lib/Framebuffer.h"
+#include "../lib/State.h"
+#include "../lib/Light.h"
+#include "../glm/gtc/matrix_transform.hpp"
+#include <vector>
 
 
 Framebuffer::Framebuffer(
@@ -25,9 +29,24 @@ Framebuffer::Framebuffer(
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE,	GL_COMPARE_REF_TO_TEXTURE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
 
-	//glUseProgram(idProgramPass1);
-	//glClear(GL_COLOR_BUFFER_BIT);
-	//glClear(GL_DEPTH_BUFFER_BIT);
+	if (State::overrideShader == nullptr)
+	{
+		State::overrideShader = std::make_shared<Shader>("data//depthVertex.glsl", "data//depthFragment.glsl");
+
+	}
+	uint32_t iShaderID =  State::overrideShader->getId();
+
+	glUseProgram(iShaderID);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	
+	if(State::lights.size() > 0)
+	{
+		glm::vec3 vLightPos = State::lights[0]->getPosition();
+		glm::vec3 vLightDir = State::lights[0]->getDirection();
+		glm::mat4 lightVmatrix = glm::lookAt(State::lights[0]->getPosition(), vLightPos + vLightDir, glm::vec3(0, 1, 0));
+		glm::mat4 lightPmatrix = State::projectionMatrix;
+	}
 }
 Framebuffer::~Framebuffer()
 {
