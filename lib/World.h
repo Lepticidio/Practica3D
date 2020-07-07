@@ -7,11 +7,16 @@ class World
 {
 	bool m_bShadows;
 
+	float m_fFar;
+
+	Camera* m_pDepthCamera;
+
 	glm::vec3 m_vAmbientLight;
 
 	std::vector<std::shared_ptr<Entity>> m_tEntities;
 	std::vector<std::shared_ptr<Camera>> m_tCameras;
 	std::vector<std::shared_ptr<Light>> m_tLights;
+	std::shared_ptr<Shader> m_pDepthShader;
 public:
 	World();
 

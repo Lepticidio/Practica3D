@@ -2,6 +2,8 @@
 #include "../lib/State.h"
 #include "../lib/Camera.h"
 #include "../lib/Framebuffer.h"
+#include "../lib/Light.h"
+#include "../glm/gtc/matrix_transform.hpp"
 
 World::World()
 {
@@ -9,7 +11,7 @@ World::World()
 	Camera depthCamera = Camera();
 	depthCamera.setFramebuffer(frameBuffer);
 	depthCamera.setViewport(glm::ivec4(0, 0, 1024, 1024));
-	Framebuffer framebuffer();
+	m_pDepthShader = std::make_shared<Shader>("data//depthVertex.glsl", "data//depthFragment.glsl");
 }
 void World::addEntity(const std::shared_ptr<Entity>& entity)
 {
@@ -101,6 +103,35 @@ void World::draw()
 	{
 		State::lights.push_back(m_tLights[i]);
 	}
+
+	if (m_bShadows)
+	{
+		std::shared_ptr<Light> pShadowLight;
+		for (int i = 0; i < m_tLights.size(); i++)
+		{
+			std::shared_ptr<Light> pLight = m_tLights[i];
+			if (pLight->getType() == LightType::POINT)
+			{
+				pShadowLight = pLight;
+			}
+		}
+		if (pShadowLight != nullptr)
+		{
+			State::overrideShader = m_pDepthShader;
+
+			glm::vec3 vLightPos = pShadowLight->getPosition();
+			float fLightLength = vLightPos.length();
+			glm::vec3 vNormLightPos = vNormLightPos / fLightLength;
+			glm::vec3 vCutPlanePos = vNormLightPos * (m_fFar / 2);
+			m_pDepthCamera->setPosition(vCutPlanePos);
+			glm::vec3 vDir = vCutPlanePos * (-1.f);
+
+			/*m_pDepthCamera->setRotation(glm::vec3(asin(vDir), atan2(-vDir.x, -vDir.z), 0));*/
+			//
+			//m_pDepthCamera->prepare();
+			
+		}
+	}
 	
 	
 	
@@ -120,5 +151,6 @@ void World::setShadows(bool enable)
 }
 void World::setDepthOrtho(float left, float right, float bottom, float top, float near, float far)
 {
-
+	m_pDepthCamera->setProjection(glm::frustum(left, right, bottom, top, near, far));
+	m_fFar = far;
 }

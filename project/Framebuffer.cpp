@@ -47,6 +47,13 @@ Framebuffer::Framebuffer(
 		glm::mat4 lightVmatrix = glm::lookAt(State::lights[0]->getPosition(), vLightPos + vLightDir, glm::vec3(0, 1, 0));
 		glm::mat4 lightPmatrix = State::projectionMatrix;
 	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, iIDShadowBuff);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, iIDShadowText, 0);
+
+	glDrawBuffer(GL_NONE);
+	glEnable(GL_DEPTH_TEST);
+
 }
 Framebuffer::~Framebuffer()
 {
