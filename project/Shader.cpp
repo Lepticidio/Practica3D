@@ -50,6 +50,36 @@ Shader::Shader()
 	m_iVnormalLoc = glGetAttribLocation(m_iId, "vnormal");
 	
 }
+Shader::Shader(const char* _pVertexPath, const char* _pFragmentPath)
+{
+	int retCode;
+	GLenum eGl = GL_VERTEX_SHADER;
+	GLenum eGl2 = GL_FRAGMENT_SHADER;
+	uint32_t* pVertexShader = createGlShader(_pVertexPath, GL_VERTEX_SHADER);
+	uint32_t* pFragmentShader = createGlShader(_pFragmentPath, GL_FRAGMENT_SHADER);
+	m_iId = glCreateProgram();
+	glAttachShader(m_iId, *pVertexShader);
+	glAttachShader(m_iId, *pFragmentShader);
+	glLinkProgram(m_iId);
+	glDeleteShader(*pVertexShader);
+	glDeleteShader(*pFragmentShader);
+	glGetProgramiv(m_iId, GL_LINK_STATUS, &retCode);
+	if (retCode == GL_FALSE)
+	{
+		char errorLog[1024];
+		glGetProgramInfoLog(m_iId, sizeof(errorLog), nullptr, errorLog);
+		m_sError = errorLog;
+		glDeleteProgram(m_iId);
+		m_iId = 0;
+		return;
+	}
+
+	m_iVposLoc = glGetAttribLocation(m_iId, "vpos");
+	m_iVcolorLoc = glGetAttribLocation(m_iId, "vcolor");
+	m_iVtextLoc = glGetAttribLocation(m_iId, "vtex");
+	m_iVnormalLoc = glGetAttribLocation(m_iId, "vnormal");
+
+}
 
 uint32_t* Shader::createGlShader(const char* _sFileName, GLenum _eShaderType)
 {

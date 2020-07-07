@@ -68,10 +68,15 @@ void Material::prepare()
 
 	//glm::mat4 mvp = State::projectionMatrix;
 	Shader shader = * m_pShader;
-	if (State::overrideShader != nullptr)
-	{
-		shader = *State::overrideShader;
-	}
+	//if (State::overrideShader != nullptr)
+	//{
+	//	shader = *State::overrideShader;
+	//}
+	//else
+	//{
+	//	State::overrideShader = std::make_shared<Shader>("data//depthVertex.glsl", "data//depthFragment.glsl");
+
+	//}
 	shader.setMatrix(shader.getLocation("mvMatrix"), mv);
 	shader.setMatrix(shader.getLocation("projectionMatrix"), projection);
 	shader.setMatrix(shader.getLocation("normalMatrix"), normal);

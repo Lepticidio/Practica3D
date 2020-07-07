@@ -1,4 +1,4 @@
-#versión 430
-void main(void)
+#version 430
+void main()
 {
 }

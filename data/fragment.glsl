@@ -1,7 +1,5 @@
 #version 430
 
-
-
 uniform sampler2D texSampler;
 varying vec2 ftex;
 varying vec3 fambient;
@@ -10,9 +8,6 @@ varying vec3 fcolor;
 
 void main()
 {
-
-
-
 	vec4 textureColor = texture2D( texSampler, ftex);
 
 

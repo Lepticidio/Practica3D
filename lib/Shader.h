@@ -13,6 +13,7 @@ private:
 
 public:
 	Shader();
+	Shader(const char* _pVertexPath, const char* _pFragmentPath);
 	// Devuelve el identificador de OpenGL del programa
 	uint32_t getId() const;
 	// Obtiene el mensaje de error generado al compilar o enlazar
