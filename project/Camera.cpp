@@ -13,6 +13,7 @@ const glm::mat4& Camera::getProjection() const
 }
 void Camera::setProjection(const glm::mat4& proj)
 {
+	this;
 	m_projection = proj;
 }
 const glm::ivec4& Camera::getViewport() const
@@ -51,11 +52,11 @@ void Camera::prepare()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
-void Camera::setFramebuffer(const std::shared_ptr<Framebuffer>& framebuffer)
+void Camera::setFramebuffer(std::shared_ptr<Framebuffer>& framebuffer)
 {
 	m_pFramebuffer = framebuffer;
 }
-const std::shared_ptr<const Framebuffer> Camera::getFramebuffer() const
+const std::shared_ptr<Framebuffer> Camera::getFramebuffer() 
 {
 	return m_pFramebuffer;
 }

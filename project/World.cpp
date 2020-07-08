@@ -4,14 +4,17 @@
 #include "../lib/Framebuffer.h"
 #include "../lib/Light.h"
 #include "../glm/gtc/matrix_transform.hpp"
+#include "../glm/gtc/quaternion.hpp"
+#include "../glm/gtx/quaternion.hpp"
 
 World::World()
 {
 	std::shared_ptr<Framebuffer> frameBuffer = std::make_shared<Framebuffer>(nullptr, std::make_shared<Texture>(1024, 1024, true));
-	Camera depthCamera = Camera();
-	depthCamera.setFramebuffer(frameBuffer);
-	depthCamera.setViewport(glm::ivec4(0, 0, 1024, 1024));
+	m_pDepthCamera = new Camera();
+	m_pDepthCamera->setFramebuffer(frameBuffer);
+	m_pDepthCamera->setViewport(glm::ivec4(0, 0, 1024, 1024));
 	m_pDepthShader = std::make_shared<Shader>("data//depthVertex.glsl", "data//depthFragment.glsl");
+
 }
 void World::addEntity(const std::shared_ptr<Entity>& entity)
 {
@@ -106,11 +109,12 @@ void World::draw()
 
 	if (m_bShadows)
 	{
+		State::shadows = true;
 		std::shared_ptr<Light> pShadowLight;
 		for (int i = 0; i < m_tLights.size(); i++)
 		{
 			std::shared_ptr<Light> pLight = m_tLights[i];
-			if (pLight->getType() == LightType::POINT)
+			if (pLight->getType() == LightType::DIRECTIONAL)
 			{
 				pShadowLight = pLight;
 			}
@@ -119,18 +123,64 @@ void World::draw()
 		{
 			State::overrideShader = m_pDepthShader;
 
-			glm::vec3 vLightPos = pShadowLight->getPosition();
-			float fLightLength = vLightPos.length();
-			glm::vec3 vNormLightPos = vNormLightPos / fLightLength;
-			glm::vec3 vCutPlanePos = vNormLightPos * (m_fFar / 2);
-			m_pDepthCamera->setPosition(vCutPlanePos);
-			glm::vec3 vDir = vCutPlanePos * (-1.f);
+			uint32_t iShaderID = m_pDepthShader->getId();
 
-			/*m_pDepthCamera->setRotation(glm::vec3(asin(vDir), atan2(-vDir.x, -vDir.z), 0));*/
-			//
-			//m_pDepthCamera->prepare();
+			glUseProgram(iShaderID);
+			glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_DEPTH_BUFFER_BIT);
+
+		
+			m_pDepthCamera->setPosition(-pShadowLight->getDirection());
+			glm::mat4 lookAt = glm::lookAt(m_pDepthCamera->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+			glm::quat quaterRot =  glm::toQuat(lookAt);
+			glm::vec3 vEuler = glm::eulerAngles(quaterRot);
+			m_pDepthCamera->setRotation(vEuler);/*
+
+			glBindFramebuffer(GL_FRAMEBUFFER, m_pDepthCamera->getFramebuffer()->);
+			glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, iIDShadowText, 0);*/
+
+
+			glDrawBuffer(GL_NONE);
+			glEnable(GL_DEPTH_TEST);
+
+
+
+
+
+
+			for (int i = 0; i < m_tCameras.size(); i++)
+			{
+				m_tCameras[i]->prepare();
+				for (int j = 0; j < m_tEntities.size(); j++)
+				{
+					m_tEntities[j]->draw();
+				}
+			}
+
+
+			glm::mat4 bias
+			(
+				0.5f, 0, 0, 0.5f,
+				0, 0.5f, 0, 0.5f,
+				0, 0, 0.5f, 0.5f,
+				0, 0, 0, 1);
+
+			State::depthBiasMatrix = bias * State::projectionMatrix * State::viewMatrix;
+			State::defaultShader->setMatrix(State::defaultShader->getLocation("shadowMVP2"), State::depthBiasMatrix);
+
+
+			GLuint iShadowBuffer = m_pDepthCamera->getFramebuffer()->getShadowBufferID();
+			GLuint iTextureBuffer = m_pDepthCamera->getFramebuffer()->getShadowBufferID();
+			glBindFramebuffer(GL_FRAMEBUFFER, iShadowBuffer);
+			glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, iTextureBuffer, 0);
+
+			State::overrideShader = nullptr;
 			
 		}
+	}
+	else
+	{
+		State::shadows = false;
 	}
 	
 	
@@ -151,6 +201,6 @@ void World::setShadows(bool enable)
 }
 void World::setDepthOrtho(float left, float right, float bottom, float top, float near, float far)
 {
-	m_pDepthCamera->setProjection(glm::frustum(left, right, bottom, top, near, far));
+	m_pDepthCamera->setProjection(glm::ortho(left, right, bottom, top, near, far));
 	m_fFar = far;
 }

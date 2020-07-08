@@ -5,7 +5,8 @@ uniform int inumberlights;
 uniform vec3 globalAmbient;
 uniform mat4 mvMatrix;
 uniform mat4 projectionMatrix;
-uniform mat4 normalMatrix;
+uniform mat4 normalMatrix;;
+uniform mat4 shadowMVP2;
 
 attribute vec3 vpos;
 attribute vec3 vnormal;

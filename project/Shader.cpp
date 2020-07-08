@@ -124,11 +124,17 @@ void Shader::setupAttribs() const
 	//attribute vec3 vcolor;
 
 
-	glEnableVertexAttribArray(m_iVposLoc);
-	glVertexAttribPointer(m_iVposLoc, 3, GL_FLOAT, false, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, m_vPosition)));
+	if (m_iVposLoc != -1)
+	{
+		glEnableVertexAttribArray(m_iVposLoc);
+		glVertexAttribPointer(m_iVposLoc, 3, GL_FLOAT, false, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, m_vPosition)));
+	}
 
-	glEnableVertexAttribArray(m_iVcolorLoc);
-	glVertexAttribPointer(m_iVcolorLoc, 3, GL_FLOAT, false, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, m_vColor)));
+	if (m_iVcolorLoc != -1)
+	{
+		glEnableVertexAttribArray(m_iVcolorLoc);
+		glVertexAttribPointer(m_iVcolorLoc, 3, GL_FLOAT, false, sizeof(Vertex), reinterpret_cast<const void*>(offsetof(Vertex, m_vColor)));
+	}
 
 	if (m_iVtextLoc != -1)
 	{
