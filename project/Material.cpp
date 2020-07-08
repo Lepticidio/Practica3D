@@ -68,10 +68,10 @@ void Material::prepare()
 
 	//glm::mat4 mvp = State::projectionMatrix;
 	Shader shader = * m_pShader;
-	//if (State::overrideShader != nullptr)
-	//{
-	//	shader = *State::overrideShader;
-	//}
+	if (State::overrideShader != nullptr)
+	{
+		shader = *State::overrideShader;
+	}
 	//else
 	//{
 	//	State::overrideShader = std::make_shared<Shader>("data//depthVertex.glsl", "data//depthFragment.glsl");
@@ -84,6 +84,8 @@ void Material::prepare()
 	shader.setVec4(shader.getLocation("material.diffuse"), m_vColor);
 	float fShine = ((float)m_iShininess / 255.f);
 	shader.setFloat(shader.getLocation("material.shininess"), fShine);
+	shader.setMatrix(State::defaultShader->getLocation("shadowMVP2"), State::depthBiasMatrix);
+	shader.setMatrix(State::defaultShader->getLocation("shadowMVP"), State::viewMatrix*State::modelMatrix*State::projectionMatrix);
 
 	int iNumberLights = State::lights.size();
 	

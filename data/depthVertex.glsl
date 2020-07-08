@@ -1,9 +1,10 @@
 #version 430
 
-layout (location = 0) in vec3 vertexPos;
+layout (location = 0) 
+attribute vec3 vpos;
 uniform mat4 shadowMVP;
 
 void main()
 {
-	gl_Position = shadowMVP * vec4(vertexPos, 1.0);
+	gl_Position = shadowMVP * vec4(vpos, 1.0);
 }

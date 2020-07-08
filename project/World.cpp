@@ -139,24 +139,21 @@ void World::draw()
 			glBindFramebuffer(GL_FRAMEBUFFER, m_pDepthCamera->getFramebuffer()->);
 			glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, iIDShadowText, 0);*/
 
+			m_pDepthCamera->prepare();
+			for (int j = 0; j < m_tEntities.size(); j++)
+			{
+				m_tEntities[j]->draw();
+			}
+
+
+
+			GLuint iShadowBuffer = m_pDepthCamera->getFramebuffer()->getShadowBufferID();
+			GLuint iTextureBuffer = m_pDepthCamera->getFramebuffer()->getShadowBufferID();
+			glBindFramebuffer(GL_FRAMEBUFFER, iShadowBuffer);
+			glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, iTextureBuffer, 0);
 
 			glDrawBuffer(GL_NONE);
 			glEnable(GL_DEPTH_TEST);
-
-
-
-
-
-
-			for (int i = 0; i < m_tCameras.size(); i++)
-			{
-				m_tCameras[i]->prepare();
-				for (int j = 0; j < m_tEntities.size(); j++)
-				{
-					m_tEntities[j]->draw();
-				}
-			}
-
 
 			glm::mat4 bias
 			(
@@ -166,13 +163,8 @@ void World::draw()
 				0, 0, 0, 1);
 
 			State::depthBiasMatrix = bias * State::projectionMatrix * State::viewMatrix;
-			State::defaultShader->setMatrix(State::defaultShader->getLocation("shadowMVP2"), State::depthBiasMatrix);
 
 
-			GLuint iShadowBuffer = m_pDepthCamera->getFramebuffer()->getShadowBufferID();
-			GLuint iTextureBuffer = m_pDepthCamera->getFramebuffer()->getShadowBufferID();
-			glBindFramebuffer(GL_FRAMEBUFFER, iShadowBuffer);
-			glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, iTextureBuffer, 0);
 
 			State::overrideShader = nullptr;
 			
@@ -186,14 +178,14 @@ void World::draw()
 	
 	
 	
-	for (int i = 0; i < m_tCameras.size(); i++)
-	{
-		m_tCameras[i]->prepare();
-		for (int j = 0; j < m_tEntities.size(); j++)
-		{
-			m_tEntities[j]->draw();
-		}
-	}
+	//for (int i = 0; i < m_tCameras.size(); i++)
+	//{
+	//	m_tCameras[i]->prepare();
+	//	for (int j = 0; j < m_tEntities.size(); j++)
+	//	{
+	//		m_tEntities[j]->draw();
+	//	}
+	//}
 }
 void World::setShadows(bool enable)
 {

@@ -78,6 +78,10 @@ void Mesh::draw()
 	{
 		Material material = *(m_tMaterials[i]);
 		Shader shader = *(m_tMaterials[i]->getShader());
+		if (State::overrideShader != nullptr)
+		{
+			shader = *State::overrideShader;
+		}
 		material.prepare();
 		m_tBuffers[i]->draw(shader);
 	}
