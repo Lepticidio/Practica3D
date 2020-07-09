@@ -125,7 +125,7 @@ int main()
 
 	World world;
 	world.setShadows(true);
-	world.setDepthOrtho(-10, 10, -10, 10, 0.1f, 1000.f);
+	world.setDepthOrtho(-20, 20, -20, 20, 0.1f, 50.f);
 	world.addEntity(pCamera);
 	world.addEntity(pGunslinger);
 	world.addEntity(pStack);

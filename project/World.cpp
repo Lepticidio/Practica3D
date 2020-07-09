@@ -125,12 +125,17 @@ void World::draw()
 
 			uint32_t iShaderID = m_pDepthShader->getId();
 
-			glUseProgram(iShaderID);
+			glUseProgram(iShaderID);/*
 			glClear(GL_COLOR_BUFFER_BIT);
-			glClear(GL_DEPTH_BUFFER_BIT);
+			glClear(GL_DEPTH_BUFFER_BIT);*/
+
+			glDrawBuffer(GL_NONE);
+			glEnable(GL_DEPTH_TEST);
+			glDepthFunc(GL_LESS);
+
 
 		
-			m_pDepthCamera->setPosition(-pShadowLight->getDirection());
+			m_pDepthCamera->setPosition(-pShadowLight->getDirection()*10.f);
 			glm::mat4 lookAt = glm::lookAt(m_pDepthCamera->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 			glm::quat quaterRot =  glm::toQuat(lookAt);
 			glm::vec3 vEuler = glm::eulerAngles(quaterRot);
@@ -145,28 +150,24 @@ void World::draw()
 				m_tEntities[j]->draw();
 			}
 
-
+			//Pasar a framebuffer
 
 			GLuint iShadowBuffer = m_pDepthCamera->getFramebuffer()->getShadowBufferID();
-			GLuint iTextureBuffer = m_pDepthCamera->getFramebuffer()->getShadowBufferID();
+			GLuint iTextureBuffer = m_pDepthCamera->getFramebuffer()->getShadowTextureID();
 			glBindFramebuffer(GL_FRAMEBUFFER, iShadowBuffer);
 			glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, iTextureBuffer, 0);
+			//glm::mat4 bias
+			//(
+			//	0.5f, 0, 0, 0.5f,
+			//	0, 0.5f, 0, 0.5f,
+			//	0, 0, 0.5f, 0.5f,
+			//	0, 0, 0, 1);
 
-			glDrawBuffer(GL_NONE);
-			glEnable(GL_DEPTH_TEST);
-
-			glm::mat4 bias
-			(
-				0.5f, 0, 0, 0.5f,
-				0, 0.5f, 0, 0.5f,
-				0, 0, 0.5f, 0.5f,
-				0, 0, 0, 1);
-
-			State::depthBiasMatrix = bias * State::projectionMatrix * State::viewMatrix;
+			//State::depthBiasMatrix = bias * State::projectionMatrix * State::viewMatrix;
 
 
 
-			State::overrideShader = nullptr;
+			//State::overrideShader = nullptr;
 			
 		}
 	}
