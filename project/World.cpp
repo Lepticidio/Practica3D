@@ -2,14 +2,19 @@
 #include "../lib/State.h"
 #include "../lib/Camera.h"
 #include "../lib/Framebuffer.h"
+#include "../glm/gtc/matrix_transform.hpp"
+#include "../glm/gtc/quaternion.hpp"
+#include "../glm/gtx/quaternion.hpp"
+
 
 World::World()
 {
 	std::shared_ptr<Framebuffer> frameBuffer = std::make_shared<Framebuffer>(nullptr, std::make_shared<Texture>(1024, 1024, true));
-	Camera depthCamera = Camera();
-	depthCamera.setFramebuffer(frameBuffer);
-	depthCamera.setViewport(glm::ivec4(0, 0, 1024, 1024));
+	m_pDepthCamera = new Camera();
+	m_pDepthCamera->setFramebuffer(frameBuffer);
+	m_pDepthCamera->setViewport(glm::ivec4(0, 0, 1024, 1024));
 	Framebuffer framebuffer();
+	m_pDepthShader = std::make_shared<Shader>("data//depthVertex.glsl", "data//depthFragment.glsl");
 }
 void World::addEntity(const std::shared_ptr<Entity>& entity)
 {
@@ -90,7 +95,8 @@ void World::update(float deltaTime)
 }
 void World::draw()
 {
-	
+
+
 	State::ambient = m_vAmbientLight;
 
 	
@@ -101,18 +107,51 @@ void World::draw()
 	{
 		State::lights.push_back(m_tLights[i]);
 	}
-	
-	
-	
-	
-	for (int i = 0; i < m_tCameras.size(); i++)
+	m_pDepthCamera->setPosition(glm::vec3(0.6f, -3.f, 0.6f));
+	glm::mat4 lookAt = glm::lookAt(m_pDepthCamera->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	glm::quat quaterRot = glm::toQuat(lookAt);
+	glm::vec3 vEuler = glm::eulerAngles(quaterRot);
+	m_pDepthCamera->setRotation(vEuler);
+	m_pDepthCamera->prepare();
+
+	State::overrideShader = m_pDepthShader;
+
+	uint32_t iShaderID = m_pDepthShader->getId();
+
+	glUseProgram(iShaderID);
+
+	for (int j = 0; j < m_tEntities.size(); j++)
 	{
-		m_tCameras[i]->prepare();
-		for (int j = 0; j < m_tEntities.size(); j++)
-		{
-			m_tEntities[j]->draw();
-		}
+		m_tEntities[j]->draw();
 	}
+
+
+
+	//PASS 2
+
+	
+	//State::ambient = m_vAmbientLight;
+
+	//
+	//State::lights.clear();
+
+	//
+	//for (int i = 0; i < m_tLights.size(); i++)
+	//{
+	//	State::lights.push_back(m_tLights[i]);
+	//}
+	//
+	//
+	//
+	//
+	//for (int i = 0; i < m_tCameras.size(); i++)
+	//{
+	//	m_tCameras[i]->prepare();
+	//	for (int j = 0; j < m_tEntities.size(); j++)
+	//	{
+	//		m_tEntities[j]->draw();
+	//	}
+	//}
 }
 void World::setShadows(bool enable)
 {
@@ -120,5 +159,5 @@ void World::setShadows(bool enable)
 }
 void World::setDepthOrtho(float left, float right, float bottom, float top, float near, float far)
 {
-
+	m_pDepthCamera->setProjection(glm::ortho(left, right, bottom, top, near, far));
 }

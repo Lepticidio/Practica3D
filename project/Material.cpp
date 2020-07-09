@@ -51,14 +51,6 @@ void Material::prepare()
 		m_pShader = State::defaultShader;
 	}
 
-	(*m_pShader).use();
-	if (m_pTexture)
-	{
-		m_pTexture->bind();
-
-	}
-	m_pShader->setInt(m_pShader->getLocation("texSampler"), 0);
-
 
 	glm::mat4 mv =  State::viewMatrix * State::modelMatrix;
 	glm::mat4 projection = State::projectionMatrix;
@@ -66,15 +58,23 @@ void Material::prepare()
 
 	glm::mat4 normal = glm::transpose(glm::inverse(mv));
 
-	//glm::mat4 mvp = State::projectionMatrix;
-	Shader shader = * m_pShader;
-	//if (State::overrideShader != nullptr)
-	//{
-	//	shader = *State::overrideShader;
-	//}
-	//else
-	//{
-	//	State::overrideShader = std::make_shared<Shader>("data//depthVertex.glsl", "data//depthFragment.glsl");
+	Shader shader = *m_pShader;
+	if (State::overrideShader != nullptr)
+	{
+		shader = *State::overrideShader;
+	}
+	else
+	{
+		printf("NO");
+	}
+
+	shader.use();
+	if (m_pTexture)
+	{
+		m_pTexture->bind();
+
+	}
+	m_pShader->setInt(m_pShader->getLocation("texSampler"), 0);
 
 	//}
 	shader.setMatrix(shader.getLocation("mvMatrix"), mv);

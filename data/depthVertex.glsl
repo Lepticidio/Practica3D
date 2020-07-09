@@ -1,9 +1,12 @@
 #version 430
 
-layout (location = 0) in vec3 vertexPos;
-uniform mat4 shadowMVP;
+uniform mat4 mvMatrix;
+uniform mat4 projectionMatrix;
+uniform mat4 normalMatrix;
+
+attribute vec3 vpos;
 
 void main()
 {
-	gl_Position = shadowMVP * vec4(vertexPos, 1.0);
+	gl_Position = projectionMatrix * mvMatrix * vec4(vpos, 1);
 }

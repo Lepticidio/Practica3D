@@ -6,6 +6,8 @@
 class World
 {
 	bool m_bShadows;
+	Camera* m_pDepthCamera;
+	std::shared_ptr<Shader> m_pDepthShader;
 
 	glm::vec3 m_vAmbientLight;
 
