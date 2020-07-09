@@ -53,7 +53,6 @@ void Material::prepare()
 
 
 	glm::mat4 mv =  State::viewMatrix * State::modelMatrix;
-	glm::mat4 projection = State::projectionMatrix;
 
 
 	glm::mat4 normal = glm::transpose(glm::inverse(mv));
@@ -77,8 +76,9 @@ void Material::prepare()
 	m_pShader->setInt(m_pShader->getLocation("texSampler"), 0);
 
 	//}
-	shader.setMatrix(shader.getLocation("mvMatrix"), mv);
-	shader.setMatrix(shader.getLocation("projectionMatrix"), projection);
+	shader.setMatrix(shader.getLocation("viewMatrix"), State::viewMatrix);
+	shader.setMatrix(shader.getLocation("modelMatrix"), State::modelMatrix);
+	shader.setMatrix(shader.getLocation("projectionMatrix"), State::projectionMatrix);
 	shader.setMatrix(shader.getLocation("normalMatrix"), normal);
 	shader.setMatrix(shader.getLocation("shadowVP2"), State::depthBiasMatrix);
 	shader.setVec3(shader.getLocation("globalAmbient"), State::ambient);

@@ -3,7 +3,8 @@
 uniform int inumberlights;
 
 uniform vec3 globalAmbient;
-uniform mat4 mvMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 modelMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 normalMatrix;
 uniform mat4 shadowVP2;
@@ -60,7 +61,7 @@ void main()
 	iNumberLightsOut = inumberlights;
 	fambient = globalAmbient;
 
-	vec4 P = mvMatrix * vec4(vpos,1.0);
+	vec4 P = modelMatrix * viewMatrix * vec4(vpos,1.0);
 	vec3 N = normalize((normalMatrix * vec4(vnormal,1.0)).xyz);
 	vec3 Eye = normalize(-P.xyz);
 	vec3 diffuse;
@@ -104,10 +105,10 @@ void main()
 
 	}
 	//specular = vec3 (0, 0, 0);
-	shadow_coord = shadowVP2 * vec4(vpos, 1.0);
+	shadow_coord = modelMatrix * shadowVP2 * vec4(vpos, 1.0);
 
 	fcolor = globalAmbient + diffuse + specular;
-	gl_Position = projectionMatrix * mvMatrix * vec4(vpos, 1);
+	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vpos, 1);
 	ftex = vtex; 
 	fambient = globalAmbient;
 }

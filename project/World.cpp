@@ -99,9 +99,20 @@ void World::draw()
 
 	State::overrideShader = m_pDepthShader;
 
+
+	std::shared_ptr<Light> pShadowLight;
+	for (int i = 0; i < m_tLights.size(); i++)
+	{
+		std::shared_ptr<Light> pLight = m_tLights[i];
+		if (pLight->getType() == LightType::DIRECTIONAL)
+		{
+			pShadowLight = pLight;
+		}
+	}
+
 	m_pDepthCamera->getFramebuffer()->bind();
 
-	m_pDepthCamera->setPosition(glm::vec3(0.6f, -3.f, 0.6f));
+	m_pDepthCamera->setPosition(-pShadowLight->getDirection()*3.f);
 	glm::mat4 lookAt = glm::lookAt(m_pDepthCamera->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	glm::quat quaterRot = glm::toQuat(lookAt);
 	glm::vec3 vEuler = glm::eulerAngles(quaterRot);
@@ -119,10 +130,10 @@ void World::draw()
 
 	glm::mat4 bias
 	(
-		0.5f, 0, 0, 0.5f,
-		0, 0.5f, 0, 0.5f,
-		0, 0, 0.5f, 0.5f,
-		0, 0, 0, 1
+		0.5f, 0.0f, 0.0f, 0.0f, 
+		0.0f, 0.5f, 0.0f, 0.0f, 
+		0.0f, 0.0f, 0.5f, 0.0f, 
+		0.5f, 0.5f, 0.5f, 1.0f
 	);
 
 	State::depthBiasMatrix = bias * State::projectionMatrix * State::viewMatrix;

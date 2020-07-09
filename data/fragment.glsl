@@ -31,6 +31,7 @@ void main()
 	vec4 textureColor = texture2D( texSampler, ftex);
 
     vec4 vFragColor = vec4(fambient, 1.0f);
+    //vec4 vFragColor = textureColor  * vec4(fcolor, 1.0f); 
     if(shadow == 0)
     {
         vFragColor = textureColor  * vec4(fcolor, 1.0f); 

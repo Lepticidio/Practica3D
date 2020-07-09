@@ -108,6 +108,10 @@ int main()
 	std::shared_ptr<Model> pStack = std::make_shared<Model>(pStackMesh);
 	pStack->setPosition(glm::vec3(1, -1, 0));
 	pStack->setScale(glm::vec3(0.25f, 0.25f, 0.25f));
+	std::shared_ptr<Model> pFloor = std::make_shared<Model>(pStackMesh);
+	pFloor->setPosition(glm::vec3(0, -6.2, 0.f));
+	pFloor->setScale(glm::vec3(5.f, -5.f, 5.f));
+
 
 	std::shared_ptr<Light> pPointLight = std::make_shared<Light>();
 	pPointLight->setType(LightType::POINT);
@@ -123,9 +127,10 @@ int main()
 	World world;
 
 	world.addEntity(pCamera);
-	world.setDepthOrtho(-4.f, 4.f, -4.f, 4.f, 0.1f, 5.f);
+	world.setDepthOrtho(-40.f, 40.f, -40.f, 40.f, 0.1f, 5.f);
 	world.addEntity(pGunslinger);
 	world.addEntity(pStack);
+	world.addEntity(pFloor);
 	world.addEntity(pDirectionalLight);
 	world.addEntity(pPointLight);
 	world.setAmbient(glm::vec3(0.0f, 0.2f, 0.0f));
