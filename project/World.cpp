@@ -9,10 +9,10 @@
 
 World::World()
 {
-	std::shared_ptr<Framebuffer> frameBuffer = std::make_shared<Framebuffer>(nullptr, std::make_shared<Texture>(1024, 1024, true));
+	std::shared_ptr<Framebuffer> frameBuffer = std::make_shared<Framebuffer>(nullptr, std::make_shared<Texture>(8000, 6000, true));
 	m_pDepthCamera = new Camera();
 	m_pDepthCamera->setFramebuffer(frameBuffer);
-	m_pDepthCamera->setViewport(glm::ivec4(0, 0, 800, 600));
+	m_pDepthCamera->setViewport(glm::ivec4(0, 0, 8000, 6000));
 	Framebuffer framebuffer();
 	m_pDepthShader = std::make_shared<Shader>("data//depthVertex.glsl", "data//depthFragment.glsl");
 }

@@ -127,7 +127,7 @@ int main()
 	World world;
 
 	world.addEntity(pCamera);
-	world.setDepthOrtho(-40.f, 40.f, -40.f, 40.f, 0.1f, 5.f);
+	world.setDepthOrtho(-10.f, 10.f, -10.f, 10.f, 0.1f, 5.f);
 	world.addEntity(pGunslinger);
 	world.addEntity(pStack);
 	world.addEntity(pFloor);
@@ -138,6 +138,7 @@ int main()
 	// main loop
 	double lastTime = glfwGetTime();
 	float fCameraSpeed = 1.f;
+	float fAngularCameraSpeed = 1.f;
 	const float fLightRotationSpeed = 90.0f;
 	while ( !glfwWindowShouldClose(win) && !glfwGetKey(win, GLFW_KEY_ESCAPE) ) 
 	{
@@ -171,6 +172,17 @@ int main()
 		{
 			glm::vec3 vVelocity = -vRight * fCameraSpeed * deltaTime;
 			pCamera->move(vVelocity);
+		}
+
+		if (glfwGetKey(win, GLFW_KEY_Q))
+		{
+			float fRotAngle = fAngularCameraSpeed * deltaTime;
+			pCamera->rotate(glm::vec3(0, fRotAngle, 0));
+		}
+		if (glfwGetKey(win, GLFW_KEY_E))
+		{
+			float fRotAngle = -fAngularCameraSpeed * deltaTime;
+			pCamera->rotate(glm::vec3(0, fRotAngle, 0));
 		}
 
 		// get window size
