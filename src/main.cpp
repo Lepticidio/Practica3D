@@ -86,7 +86,6 @@ int main()
 	);
 	pCamera->setPosition(glm::vec3(0, 0, 3));
 	pCamera->setRotation(glm::vec3(0, 0, 0));
-
 	
 	std::shared_ptr<Shader> pShader = std::make_shared<Shader>();
 	State::defaultShader = pShader;
@@ -104,7 +103,6 @@ int main()
 	std::shared_ptr<Mesh> pStackMesh = Mesh::load("data/box_stack.obj");
 	pStackMesh->setMaterial(pStackMaterial, 0);
 
-
 	std::shared_ptr<Model> pGunslinger = std::make_shared<Model>(pGunslingerMesh);
 	pGunslinger->setScale(glm::vec3(0.05f, 0.05f, 0.05f));
 	std::shared_ptr<Model> pStack = std::make_shared<Model>(pStackMesh);
@@ -121,7 +119,6 @@ int main()
 	pDirectionalLight->setType(LightType::DIRECTIONAL);
 	pDirectionalLight->setColor(glm::vec3(0.0f, 0.0f, 1.0f));
 	pDirectionalLight->setDirection(glm::vec3(0.2f, -1.0f, 0.2f));
-
 
 	World world;
 
