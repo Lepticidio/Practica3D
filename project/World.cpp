@@ -133,16 +133,17 @@ void World::draw()
 			glEnable(GL_DEPTH_TEST);
 			glDepthFunc(GL_LESS);
 
+			//m_pDepthCamera->setPosition(-pShadowLight->getDirection() * 10.f);
+			//glm::mat4 lookAt = glm::lookAt(m_pDepthCamera->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+			//glm::quat quaterRot = glm::toQuat(lookAt);
+			//glm::vec3 vEuler = glm::eulerAngles(quaterRot);
+			//m_pDepthCamera->setRotation(vEuler);/*
 
-		
-			m_pDepthCamera->setPosition(-pShadowLight->getDirection()*10.f);
+			m_pDepthCamera->setPosition(glm::vec3(0.75f, -3.75f, 0.75f));
 			glm::mat4 lookAt = glm::lookAt(m_pDepthCamera->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-			glm::quat quaterRot =  glm::toQuat(lookAt);
+			glm::quat quaterRot = glm::toQuat(lookAt);
 			glm::vec3 vEuler = glm::eulerAngles(quaterRot);
-			m_pDepthCamera->setRotation(vEuler);/*
-
-			glBindFramebuffer(GL_FRAMEBUFFER, m_pDepthCamera->getFramebuffer()->);
-			glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, iIDShadowText, 0);*/
+			m_pDepthCamera->setRotation(vEuler);
 
 			m_pDepthCamera->prepare();
 			for (int j = 0; j < m_tEntities.size(); j++)
@@ -152,10 +153,7 @@ void World::draw()
 
 			//Pasar a framebuffer
 
-			GLuint iShadowBuffer = m_pDepthCamera->getFramebuffer()->getShadowBufferID();
-			GLuint iTextureBuffer = m_pDepthCamera->getFramebuffer()->getShadowTextureID();
-			glBindFramebuffer(GL_FRAMEBUFFER, iShadowBuffer);
-			glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, iTextureBuffer, 0);
+			m_pDepthCamera->getFramebuffer()->bind();
 			//glm::mat4 bias
 			//(
 			//	0.5f, 0, 0, 0.5f,

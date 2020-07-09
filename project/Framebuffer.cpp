@@ -72,6 +72,8 @@ const std::shared_ptr<Texture>& Framebuffer::getDepthTexture() const
 }
 void Framebuffer::bind() const
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, m_iShadowBufferID);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_iShadowTextureID, 0);
 }
 void Framebuffer::bindScreen()
 {
