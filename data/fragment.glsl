@@ -11,24 +11,19 @@ in vec4 shadow_coord;
 
 void main()
 {
-    float closestDepth = texture(shText, shadow_coord.xy).r; 
+    float closestDepth = texture2D(shText, shadow_coord.xy).r; 
 
     float currentDepth = shadow_coord.z;
 
-    // check whether current frag pos is in shadow
-    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
-
-
-
 	vec4 textureColor = texture2D( texSampler, ftex);
 
-    vec4 vFragColor = vec4(fambient, 1.0f);
-    //vec4 vFragColor = textureColor  * vec4(fcolor, 1.0f); 
-    if(shadow == 0)
+    vec4 vFragColor =  textureColor  * vec4(fcolor, 1.0f); 
+    if( currentDepth > closestDepth)
     {
-        vFragColor = textureColor  * vec4(fcolor, 1.0f); 
+        vFragColor = vec4(fambient, 1.0f);
     }
 
 	gl_FragColor = vFragColor;
+    //gl_FragColor = vec4(vec3(currentDepth), 1.0f);
 
 }

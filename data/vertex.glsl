@@ -108,7 +108,7 @@ void main()
 	shadow_coord = shadowVP2 * modelMatrix * vec4(vpos, 1.0);
 
 	fcolor = globalAmbient + diffuse + specular;
-	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vpos, 1);
+	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vpos, 1.0);
 	ftex = vtex; 
 	fambient = globalAmbient;
 }

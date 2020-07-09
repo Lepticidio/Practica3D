@@ -127,7 +127,7 @@ int main()
 	World world;
 
 	world.addEntity(pCamera);
-	world.setDepthOrtho(-10.f, 10.f, -10.f, 10.f, 0.1f, 10.f);
+	world.setDepthOrtho(-10.f, 10.f, -10.f, 10.f, 0.1f, 7.5f);
 	world.addEntity(pGunslinger);
 	world.addEntity(pStack);
 	world.addEntity(pFloor);
