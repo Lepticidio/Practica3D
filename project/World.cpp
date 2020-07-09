@@ -95,6 +95,8 @@ void World::update(float deltaTime)
 }
 void World::draw()
 {
+	//PASS 1
+
 	State::overrideShader = m_pDepthShader;
 
 	m_pDepthCamera->getFramebuffer()->bind();
@@ -110,8 +112,6 @@ void World::draw()
 	{
 		m_tEntities[j]->draw();
 	}
-
-	//m_pDepthCamera->getFramebuffer()->bind();
 
 	//PASS 2
 
@@ -136,28 +136,25 @@ void World::draw()
 
 
 	
-	//State::ambient = m_vAmbientLight;
+	State::ambient = m_vAmbientLight;
 
-	//
-	//State::lights.clear();
+	
+	State::lights.clear();
 
-	//
-	//for (int i = 0; i < m_tLights.size(); i++)
-	//{
-	//	State::lights.push_back(m_tLights[i]);
-	//}
-	//
-	//
-	//
-	//
-	//for (int i = 0; i < m_tCameras.size(); i++)
-	//{
-	//	m_tCameras[i]->prepare();
-	//	for (int j = 0; j < m_tEntities.size(); j++)
-	//	{
-	//		m_tEntities[j]->draw();
-	//	}
-	//}
+	
+	for (int i = 0; i < m_tLights.size(); i++)
+	{
+		State::lights.push_back(m_tLights[i]);
+	}
+	
+	for (int i = 0; i < m_tCameras.size(); i++)
+	{
+		m_tCameras[i]->prepare();
+		for (int j = 0; j < m_tEntities.size(); j++)
+		{
+			m_tEntities[j]->draw();
+		}
+	}
 }
 void World::setShadows(bool enable)
 {

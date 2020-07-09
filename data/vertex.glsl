@@ -6,6 +6,7 @@ uniform vec3 globalAmbient;
 uniform mat4 mvMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 normalMatrix;
+uniform mat4 shadowVP2;
 
 attribute vec3 vpos;
 attribute vec3 vnormal;
@@ -16,6 +17,8 @@ varying vec2 ftex;
 varying vec3 fambient;
 varying vec3 fdiffuse;
 varying vec3 fcolor;
+
+out vec4 shadow_coord;
 
 out vec3 varyingNormal;
 out vec3 varyingLightDirs[99]; 
@@ -46,6 +49,8 @@ struct Material
 	float shininess;
 };
 uniform Material material;
+
+//Layout (binding=0) uniform sampler2DShadow shText;
 
 
 void main()
@@ -99,6 +104,8 @@ void main()
 
 	}
 	//specular = vec3 (0, 0, 0);
+	shadow_coord = shadowVP2 * vec4(vpos, 1.0);
+
 	fcolor = globalAmbient + diffuse + specular;
 	gl_Position = projectionMatrix * mvMatrix * vec4(vpos, 1);
 	ftex = vtex; 
