@@ -95,18 +95,12 @@ void World::update(float deltaTime)
 }
 void World::draw()
 {
+	State::overrideShader = m_pDepthShader;
 
+	//glDrawBuffer(GL_NONE);
+	//glEnable(GL_DEPTH_TEST);
+	//glDepthFunc(GL_LESS);
 
-	State::ambient = m_vAmbientLight;
-
-	
-	State::lights.clear();
-
-	
-	for (int i = 0; i < m_tLights.size(); i++)
-	{
-		State::lights.push_back(m_tLights[i]);
-	}
 	m_pDepthCamera->setPosition(glm::vec3(0.6f, -3.f, 0.6f));
 	glm::mat4 lookAt = glm::lookAt(m_pDepthCamera->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	glm::quat quaterRot = glm::toQuat(lookAt);
@@ -114,18 +108,12 @@ void World::draw()
 	m_pDepthCamera->setRotation(vEuler);
 	m_pDepthCamera->prepare();
 
-	State::overrideShader = m_pDepthShader;
-
-	uint32_t iShaderID = m_pDepthShader->getId();
-
-	glUseProgram(iShaderID);
-
 	for (int j = 0; j < m_tEntities.size(); j++)
 	{
 		m_tEntities[j]->draw();
 	}
 
-
+	//m_pDepthCamera->getFramebuffer()->bind();
 
 	//PASS 2
 
