@@ -9,10 +9,10 @@
 
 World::World()
 {
-	std::shared_ptr<Framebuffer> frameBuffer = std::make_shared<Framebuffer>(nullptr, std::make_shared<Texture>(8000, 6000, true));
+	std::shared_ptr<Framebuffer> frameBuffer = std::make_shared<Framebuffer>(nullptr, std::make_shared<Texture>(800, 600, true));
 	m_pDepthCamera = new Camera();
 	m_pDepthCamera->setFramebuffer(frameBuffer);
-	m_pDepthCamera->setViewport(glm::ivec4(0, 0, 8000, 6000));
+	m_pDepthCamera->setViewport(glm::ivec4(0, 0, 800, 600));
 	Framebuffer framebuffer();
 	m_pDepthShader = std::make_shared<Shader>("data//depthVertex.glsl", "data//depthFragment.glsl");
 }
@@ -112,7 +112,7 @@ void World::draw()
 
 	m_pDepthCamera->getFramebuffer()->bind();
 
-	m_pDepthCamera->setPosition(-pShadowLight->getDirection()*3.f);
+	m_pDepthCamera->setPosition(pShadowLight->getDirection()*6.f);
 	glm::mat4 lookAt = glm::lookAt(m_pDepthCamera->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	glm::quat quaterRot = glm::toQuat(lookAt);
 	glm::vec3 vEuler = glm::eulerAngles(quaterRot);
