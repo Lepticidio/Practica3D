@@ -105,7 +105,7 @@ void main()
 
 	}
 	//specular = vec3 (0, 0, 0);
-	shadow_coord = modelMatrix * shadowVP2 * vec4(vpos, 1.0);
+	shadow_coord = shadowVP2 * modelMatrix * vec4(vpos, 1.0);
 
 	fcolor = globalAmbient + diffuse + specular;
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vpos, 1);
