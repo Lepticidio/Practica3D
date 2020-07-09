@@ -51,11 +51,11 @@ void Camera::prepare()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
-void Camera::setFramebuffer(const std::shared_ptr<Framebuffer>& framebuffer)
+void Camera::setFramebuffer(std::shared_ptr<Framebuffer>& framebuffer)
 {
 	m_pFramebuffer = framebuffer;
 }
-const std::shared_ptr<const Framebuffer> Camera::getFramebuffer() const
+const std::shared_ptr<Framebuffer> Camera::getFramebuffer() const
 {
 	return m_pFramebuffer;
 }

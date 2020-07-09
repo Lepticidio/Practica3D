@@ -12,6 +12,8 @@ public:
 	~Framebuffer();
 	const std::shared_ptr<Texture>& getColorTexture() const;
 	const std::shared_ptr<Texture>& getDepthTexture() const;
+	GLuint getShadowBufferID() { return m_iShadowBufferID; }
+	GLuint getShadowTextureID() { return m_iShadowTextureID; }
 	void bind() const;
 	static void bindScreen();
 };
