@@ -97,9 +97,7 @@ void World::draw()
 {
 	State::overrideShader = m_pDepthShader;
 
-	//glDrawBuffer(GL_NONE);
-	//glEnable(GL_DEPTH_TEST);
-	//glDepthFunc(GL_LESS);
+	m_pDepthCamera->getFramebuffer()->bind();
 
 	m_pDepthCamera->setPosition(glm::vec3(0.6f, -3.f, 0.6f));
 	glm::mat4 lookAt = glm::lookAt(m_pDepthCamera->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
