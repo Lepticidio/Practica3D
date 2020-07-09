@@ -72,6 +72,10 @@ void Material::prepare()
 	{
 		shader = *State::overrideShader;
 	}
+	else
+	{
+		printf("NO");
+	}
 	//else
 	//{
 	//	State::overrideShader = std::make_shared<Shader>("data//depthVertex.glsl", "data//depthFragment.glsl");
@@ -87,32 +91,32 @@ void Material::prepare()
 	shader.setMatrix(State::defaultShader->getLocation("shadowMVP2"), State::depthBiasMatrix);
 	shader.setMatrix(State::defaultShader->getLocation("shadowMVP"), State::viewMatrix*State::modelMatrix*State::projectionMatrix);
 
-	int iNumberLights = State::lights.size();
-	
-	
-	shader.setInt(shader.getLocation("inumberlights"), iNumberLights);
-	for (int i = 0; i < iNumberLights; i++)
-	{
-		std::string sPosDiffuse = "lights[" + std::to_string(i) + "].diffuse";
-		std::string sPosPosition = "lights[" + std::to_string(i) + "].position";
-		std::string sAttenuation = "lights[" + std::to_string(i) + "].attenuation";
-		std::string sDirection= "lights[" + std::to_string(i) + "].direction";
-		std::string sType = "lights[" + std::to_string(i) + "].type";
-		const char* cPosDiffuse = sPosDiffuse.c_str();
-		const char* cPosPosition = sPosPosition.c_str();
-		const char* cAttenuation = sAttenuation.c_str();
-		const char* cDirection = sDirection.c_str();
-		const char* cType = sType.c_str();
-		glm::vec3 vLightDiffuse = State::lights[i]->getColor();
-		glm::vec3 vLightPosition = State::lights[i]->getPosition();
-		glm::vec3 vLightDirection = State::lights[i]->getDirection();
-		float fLightAttenuation = State::lights[i]->getLinearAttenuation();
-		int iType= State::lights[i]->getType();
-		shader.setVec3(shader.getLocation(cPosDiffuse), vLightDiffuse);
-		shader.setVec3(shader.getLocation(cPosPosition), vLightPosition);
-		shader.setVec3(shader.getLocation(cDirection), vLightDirection);
-		shader.setFloat(shader.getLocation(cAttenuation), fLightAttenuation);
-		shader.setInt(shader.getLocation(cType), iType);
-	}
+	//int iNumberLights = State::lights.size();
+	//
+	//
+	//shader.setInt(shader.getLocation("inumberlights"), iNumberLights);
+	//for (int i = 0; i < iNumberLights; i++)
+	//{
+	//	std::string sPosDiffuse = "lights[" + std::to_string(i) + "].diffuse";
+	//	std::string sPosPosition = "lights[" + std::to_string(i) + "].position";
+	//	std::string sAttenuation = "lights[" + std::to_string(i) + "].attenuation";
+	//	std::string sDirection= "lights[" + std::to_string(i) + "].direction";
+	//	std::string sType = "lights[" + std::to_string(i) + "].type";
+	//	const char* cPosDiffuse = sPosDiffuse.c_str();
+	//	const char* cPosPosition = sPosPosition.c_str();
+	//	const char* cAttenuation = sAttenuation.c_str();
+	//	const char* cDirection = sDirection.c_str();
+	//	const char* cType = sType.c_str();
+	//	glm::vec3 vLightDiffuse = State::lights[i]->getColor();
+	//	glm::vec3 vLightPosition = State::lights[i]->getPosition();
+	//	glm::vec3 vLightDirection = State::lights[i]->getDirection();
+	//	float fLightAttenuation = State::lights[i]->getLinearAttenuation();
+	//	int iType= State::lights[i]->getType();
+	//	shader.setVec3(shader.getLocation(cPosDiffuse), vLightDiffuse);
+	//	shader.setVec3(shader.getLocation(cPosPosition), vLightPosition);
+	//	shader.setVec3(shader.getLocation(cDirection), vLightDirection);
+	//	shader.setFloat(shader.getLocation(cAttenuation), fLightAttenuation);
+	//	shader.setInt(shader.getLocation(cType), iType);
+	//}
 
 }

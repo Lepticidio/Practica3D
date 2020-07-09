@@ -121,17 +121,17 @@ void World::draw()
 		}
 		if (pShadowLight != nullptr)
 		{
-			State::overrideShader = m_pDepthShader;
 
-			uint32_t iShaderID = m_pDepthShader->getId();
-
-			glUseProgram(iShaderID);/*
-			glClear(GL_COLOR_BUFFER_BIT);
-			glClear(GL_DEPTH_BUFFER_BIT);*/
 
 			glDrawBuffer(GL_NONE);
 			glEnable(GL_DEPTH_TEST);
-			glDepthFunc(GL_LESS);
+
+			glViewport(0, 0, 1024, 1024);
+			m_pDepthCamera->getFramebuffer()->bind();
+			//glClear(GL_DEPTH_BUFFER_BIT);
+			//glDrawBuffer(GL_NONE);
+			//glEnable(GL_DEPTH_TEST);
+			//glDepthFunc(GL_LESS);
 
 			//m_pDepthCamera->setPosition(-pShadowLight->getDirection() * 10.f);
 			//glm::mat4 lookAt = glm::lookAt(m_pDepthCamera->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
@@ -146,14 +146,20 @@ void World::draw()
 			m_pDepthCamera->setRotation(vEuler);
 
 			m_pDepthCamera->prepare();
+
+
+			State::overrideShader = m_pDepthShader;
+
+			uint32_t iShaderID = m_pDepthShader->getId();
+
+			glUseProgram(iShaderID);
+			/**/
 			for (int j = 0; j < m_tEntities.size(); j++)
 			{
 				m_tEntities[j]->draw();
 			}
-
+			//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			//Pasar a framebuffer
-
-			m_pDepthCamera->getFramebuffer()->bind();
 			//glm::mat4 bias
 			//(
 			//	0.5f, 0, 0, 0.5f,
