@@ -50,7 +50,7 @@ struct Material
 };
 uniform Material material;
 
-//Layout (binding=0) uniform sampler2DShadow shText;
+//layout (binding=0) uniform sampler2DShadow shText;
 
 
 void main()
