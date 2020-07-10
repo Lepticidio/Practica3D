@@ -5,6 +5,10 @@
 #include "../lib/Model.h"
 #include "../lib/glfw/glfw3.h"
 #include "../lib/World.h"
+#include "../glm/gtc/matrix_transform.hpp"
+#include "../glm/gtc/quaternion.hpp"
+#include "../glm/gtx/quaternion.hpp"
+
 #include <iostream>
 
 
@@ -86,6 +90,7 @@ int main()
 	);
 	pCamera->setPosition(glm::vec3(0, 0, 3));
 	pCamera->setRotation(glm::vec3(0, 0, 0));
+
 	
 	std::shared_ptr<Shader> pShader = std::make_shared<Shader>();
 	State::defaultShader = pShader;
@@ -123,6 +128,22 @@ int main()
 	pDirectionalLight->setType(LightType::DIRECTIONAL);
 	pDirectionalLight->setColor(glm::vec3(0.0f, 0.0f, 1.0f));
 	pDirectionalLight->setDirection(glm::vec3(0.2f, -1.0f, 0.2f));
+
+	std::shared_ptr<Camera> pTestingCamera = std::make_shared<Camera>();
+
+	pTestingCamera->setViewport(glm::ivec4(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT));
+	pTestingCamera->setProjection
+	(
+		glm::ortho(-10.f, 10.f, -10.f, 10.f, 0.1f, 7.5f)
+	);
+
+	pTestingCamera->setPosition(pDirectionalLight->getDirection() * 6.f);
+	glm::mat4 lookAt = glm::lookAt(pTestingCamera->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	glm::quat quaterRot = glm::toQuat(lookAt);
+	glm::vec3 vEuler = glm::eulerAngles(quaterRot);
+	pTestingCamera->setRotation(vEuler);
+	pTestingCamera->prepare();
+
 
 	World world;
 

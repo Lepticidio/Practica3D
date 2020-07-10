@@ -68,12 +68,11 @@ void Material::prepare()
 	}
 
 	shader.use();
-	if (m_pTexture)
+	if (State::overrideShader == nullptr && m_pTexture)
 	{
 		m_pTexture->bind();
 
 	}
-	m_pShader->setInt(m_pShader->getLocation("texSampler"), 0);
 
 	//}
 	shader.setMatrix(shader.getLocation("viewMatrix"), State::viewMatrix);
@@ -85,6 +84,8 @@ void Material::prepare()
 	shader.setVec4(shader.getLocation("material.diffuse"), m_vColor);
 	float fShine = ((float)m_iShininess / 255.f);
 	shader.setFloat(shader.getLocation("material.shininess"), fShine);
+	shader.setInt(shader.getLocation("shText"), 0);
+	shader.setInt(shader.getLocation("texSampler"), 1);
 
 	int iNumberLights = State::lights.size();
 	

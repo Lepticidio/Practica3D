@@ -126,6 +126,8 @@ void World::draw()
 
 	//PASS 2
 
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 	State::overrideShader = nullptr;
 
 	glm::mat4 bias
@@ -138,12 +140,15 @@ void World::draw()
 
 	State::depthBiasMatrix = bias * State::projectionMatrix * State::viewMatrix;
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glActiveTexture(GL_TEXTURE0);
+	
+	//glActiveTexture(GL_TEXTURE0);
 	std::shared_ptr<Framebuffer> pFramebuffer = m_pDepthCamera->getFramebuffer();
 	GLuint iShadowTextureID = pFramebuffer->getShadowTextureID();
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, iShadowTextureID);
-	glDrawBuffer(GL_FRONT);
+	glActiveTexture(GL_TEXTURE1);
+
+	//glDrawBuffer(GL_FRONT);
 
 
 	

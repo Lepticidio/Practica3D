@@ -1,6 +1,7 @@
 
 #define LITE_GFX_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
+#include "GL/glew.h"
 #include "../lib/Texture.h"
 
 Texture::Texture(int _iId, int _iWidth, int _iHeight) : m_iId(_iId), m_iWidth(_iWidth), m_iHeight(_iHeight)
@@ -14,6 +15,8 @@ Texture::Texture(int _iWidth, int _iHeight, bool _bIsDepth) :  m_iWidth(_iWidth)
 {
 	GLuint texId;
 	glGenTextures(1, &texId);
+	glActiveTexture(GL_TEXTURE1);
+
 	glBindTexture(GL_TEXTURE_2D, texId);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -27,8 +30,10 @@ std::shared_ptr<Texture> Texture::load(const char* filename)
 	stbi_set_flip_vertically_on_load(true);
 	unsigned char* sRunBytes = stbi_load(filename, &iWidth, &iHeight, nullptr, 4);
 	GLuint texId;
+	glActiveTexture(GL_TEXTURE1);
 	glGenTextures(1, &texId);
-	glBindTexture(GL_TEXTURE_2D, texId);
+	
+	(GL_TEXTURE_2D, texId);
 	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -49,5 +54,6 @@ const glm::ivec2& Texture::getSize() const
 }
 void Texture::bind() const
 {
+	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, m_iId);
 }
