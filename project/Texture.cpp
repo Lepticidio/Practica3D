@@ -1,6 +1,7 @@
 
 #define LITE_GFX_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
+#include "GL/glew.h"
 #include "../lib/Texture.h"
 
 Texture::Texture(int _iId, int _iWidth, int _iHeight) : m_iId(_iId), m_iWidth(_iWidth), m_iHeight(_iHeight)
@@ -12,16 +13,19 @@ Texture::Texture(int _iId, int _iWidth, int _iHeight) : m_iId(_iId), m_iWidth(_i
 
 Texture::Texture(int _iWidth, int _iHeight, bool _bIsDepth) :  m_iWidth(_iWidth), m_iHeight(_iHeight), m_bIsDepth(_bIsDepth)
 {
+	glActiveTexture(GL_TEXTURE0);
 	GLuint texId;
 	glGenTextures(1, &texId);
 	glBindTexture(GL_TEXTURE_2D, texId);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _iWidth, _iHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, _iWidth, _iHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 }
 std::shared_ptr<Texture> Texture::load(const char* filename)
 {
+	glActiveTexture(GL_TEXTURE1);
 	int iWidth = 0;
 	int iHeight = 0;
 	stbi_set_flip_vertically_on_load(true);

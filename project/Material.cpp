@@ -64,6 +64,7 @@ void Material::prepare()
 	}
 	else
 	{
+		glActiveTexture(GL_TEXTURE1);
 		printf("NO");
 	}
 
@@ -73,9 +74,8 @@ void Material::prepare()
 		m_pTexture->bind();
 
 	}
-	m_pShader->setInt(m_pShader->getLocation("texSampler"), 0);
-
-	//}
+	shader.setInt(shader.getLocation("texSampler"), 1);
+	shader.setInt(shader.getLocation("shText"), 0);
 	shader.setMatrix(shader.getLocation("viewMatrix"), State::viewMatrix);
 	shader.setMatrix(shader.getLocation("modelMatrix"), State::modelMatrix);
 	shader.setMatrix(shader.getLocation("projectionMatrix"), State::projectionMatrix);

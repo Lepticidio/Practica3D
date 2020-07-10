@@ -13,7 +13,6 @@ World::World()
 	m_pDepthCamera = new Camera();
 	m_pDepthCamera->setFramebuffer(frameBuffer);
 	m_pDepthCamera->setViewport(glm::ivec4(0, 0, 8000, 6000));
-	Framebuffer framebuffer();
 	m_pDepthShader = std::make_shared<Shader>("data//depthVertex.glsl", "data//depthFragment.glsl");
 }
 void World::addEntity(const std::shared_ptr<Entity>& entity)
@@ -98,6 +97,7 @@ void World::draw()
 	//PASS 1
 
 	State::overrideShader = m_pDepthShader;
+	glActiveTexture(GL_TEXTURE0);
 
 
 	std::shared_ptr<Light> pShadowLight;
@@ -112,7 +112,7 @@ void World::draw()
 
 	m_pDepthCamera->getFramebuffer()->bind();
 
-	m_pDepthCamera->setPosition(pShadowLight->getDirection()*6.f);
+	m_pDepthCamera->setPosition(pShadowLight->getDirection()*8.f);
 	glm::mat4 lookAt = glm::lookAt(m_pDepthCamera->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	glm::quat quaterRot = glm::toQuat(lookAt);
 	glm::vec3 vEuler = glm::eulerAngles(quaterRot);
@@ -136,20 +136,15 @@ void World::draw()
 		0.5f, 0.5f, 0.5f, 1.0f
 	);
 
-	State::depthBiasMatrix = bias * State::projectionMatrix * State::viewMatrix;
-
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glActiveTexture(GL_TEXTURE0);
-	std::shared_ptr<Framebuffer> pFramebuffer = m_pDepthCamera->getFramebuffer();
-	GLuint iShadowTextureID = pFramebuffer->getShadowTextureID();
-	glBindTexture(GL_TEXTURE_2D, iShadowTextureID);
-	glDrawBuffer(GL_FRONT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-	
+
+
+
+	State::depthBiasMatrix = bias * State::projectionMatrix * State::viewMatrix;
 	State::ambient = m_vAmbientLight;
-
-	
 	State::lights.clear();
 
 	
@@ -160,7 +155,11 @@ void World::draw()
 	
 	for (int i = 0; i < m_tCameras.size(); i++)
 	{
+		glActiveTexture(GL_TEXTURE0);
 		m_tCameras[i]->prepare();
+		std::shared_ptr<Framebuffer> pFramebuffer = m_pDepthCamera->getFramebuffer();
+		GLuint iShadowTextureID = pFramebuffer->getShadowTextureID();
+		glBindTexture(GL_TEXTURE_2D, iShadowTextureID);
 		for (int j = 0; j < m_tEntities.size(); j++)
 		{
 			m_tEntities[j]->draw();
