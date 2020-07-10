@@ -9,10 +9,10 @@
 
 World::World()
 {
-	std::shared_ptr<Framebuffer> frameBuffer = std::make_shared<Framebuffer>(nullptr, std::make_shared<Texture>(8000, 6000, true));
+	std::shared_ptr<Framebuffer> frameBuffer = std::make_shared<Framebuffer>(nullptr, std::make_shared<Texture>(1024, 1024, true));
 	m_pDepthCamera = new Camera();
 	m_pDepthCamera->setFramebuffer(frameBuffer);
-	m_pDepthCamera->setViewport(glm::ivec4(0, 0, 8000, 6000));
+	m_pDepthCamera->setViewport(glm::ivec4(0, 0, 1024, 1024));
 	m_pDepthShader = std::make_shared<Shader>("data//depthVertex.glsl", "data//depthFragment.glsl");
 }
 void World::addEntity(const std::shared_ptr<Entity>& entity)
@@ -98,6 +98,8 @@ void World::draw()
 
 	State::overrideShader = m_pDepthShader;
 	glActiveTexture(GL_TEXTURE0);
+	m_pDepthShader->use();
+
 
 
 	std::shared_ptr<Light> pShadowLight;
@@ -110,7 +112,6 @@ void World::draw()
 		}
 	}
 
-	m_pDepthCamera->getFramebuffer()->bind();
 
 	m_pDepthCamera->setPosition(pShadowLight->getDirection()*8.f);
 	glm::mat4 lookAt = glm::lookAt(m_pDepthCamera->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
@@ -119,6 +120,7 @@ void World::draw()
 	m_pDepthCamera->setRotation(vEuler);
 	m_pDepthCamera->prepare();
 
+	m_pDepthCamera->getFramebuffer()->bind();
 	for (int j = 0; j < m_tEntities.size(); j++)
 	{
 		m_tEntities[j]->draw();
@@ -138,8 +140,7 @@ void World::draw()
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
+	glActiveTexture(GL_TEXTURE0);
 
 
 
@@ -155,16 +156,17 @@ void World::draw()
 	
 	for (int i = 0; i < m_tCameras.size(); i++)
 	{
-		glActiveTexture(GL_TEXTURE0);
 		m_tCameras[i]->prepare();
 		std::shared_ptr<Framebuffer> pFramebuffer = m_pDepthCamera->getFramebuffer();
 		GLuint iShadowTextureID = pFramebuffer->getShadowTextureID();
 		glBindTexture(GL_TEXTURE_2D, iShadowTextureID);
+		glActiveTexture(GL_TEXTURE1);
 		for (int j = 0; j < m_tEntities.size(); j++)
 		{
 			m_tEntities[j]->draw();
 		}
 	}
+
 }
 void World::setShadows(bool enable)
 {

@@ -1,7 +1,7 @@
 #version 430
 
-layout (binding=1) uniform sampler2D texSampler;
-layout (binding=0) uniform sampler2D shText;
+uniform sampler2D texSampler;
+uniform sampler2D shText;
 varying vec2 ftex;
 varying vec3 fambient;
 varying vec3 fdiffuse;
