@@ -20,10 +20,12 @@ Framebuffer::Framebuffer(
 	glGenFramebuffers(1, &m_iShadowBufferID);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, m_iShadowBufferID);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_iShadowTextureID, 0);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_iShadowTextureID, 0);
 
 	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
+	glReadBuffer(GL_NONE); 
+	//glEnable(GL_DEPTH_TEST);
+
 }
 Framebuffer::~Framebuffer()
 {
@@ -39,8 +41,8 @@ const std::shared_ptr<Texture>& Framebuffer::getDepthTexture() const
 }
 void Framebuffer::bind() const
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, m_iShadowBufferID);
 	glClear(GL_DEPTH_BUFFER_BIT);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_iShadowBufferID);
 	//glEnable(GL_DEPTH_TEST);
 
 

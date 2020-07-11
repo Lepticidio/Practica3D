@@ -140,7 +140,6 @@ void World::draw()
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glActiveTexture(GL_TEXTURE0);
 
 
 
@@ -159,6 +158,7 @@ void World::draw()
 		m_tCameras[i]->prepare();
 		std::shared_ptr<Framebuffer> pFramebuffer = m_pDepthCamera->getFramebuffer();
 		GLuint iShadowTextureID = pFramebuffer->getShadowTextureID();
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, iShadowTextureID);
 		glActiveTexture(GL_TEXTURE1);
 		for (int j = 0; j < m_tEntities.size(); j++)

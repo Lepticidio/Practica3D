@@ -46,7 +46,10 @@ void Camera::prepare()
 	//glScissor(m_vViewport.x, m_vViewport.y, m_vViewport.z, m_vViewport.w);
 
 	//clear buffers
-	glClearColor(m_vColor.r, m_vColor.g, m_vColor.b, 1.0f);
+	if (State::overrideShader == nullptr)
+	{
+		glClearColor(m_vColor.r, m_vColor.g, m_vColor.b, 1.0f);
+	}
 }
 void Camera::setFramebuffer(std::shared_ptr<Framebuffer>& framebuffer)
 {
